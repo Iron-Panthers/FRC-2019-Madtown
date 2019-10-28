@@ -24,8 +24,18 @@ public class Hardware {
 	public SparkMaxMotorGroup leftDriveMotors;
 
 	public Solenoid gearShift;
-
 	/** Motors/sensors for other subsystems will go down here */
+
+	/* Elevator Motor Controllers */
+	public CANSparkMax elevatorMotor1;
+	public CANSparkMax elevatorMotor2;
+	public CANSparkMax elevatorMotor3;
+
+	public Solenoid elevatorShift;
+	public Solenoid extendArm;
+
+	/* Elevator MotorGroup */
+	public SparkMaxMotorGroup elevatorMotors;
 
 	public Hardware() {
 		/* Drivebase motor controller creation */
@@ -38,5 +48,14 @@ public class Hardware {
 		rightDriveMotors = new SparkMaxMotorGroup("Right Drive Motor Group", driveRight1, driveRight2);
 		leftDriveMotors = new SparkMaxMotorGroup("Left Drive Motor Group", driveLeft1, driveLeft2);
 		gearShift = new Solenoid(Constants.GEAR_SHIFT_PORT);
+
+		/* Elevator motor controller creation */
+		elevatorMotor1 = new CANSparkMax(Constants.ELEVATOR_M1_PORT, MotorType.kBrushless);
+		elevatorMotor2 = new CANSparkMax(Constants.ELEVATOR_M2_PORT, MotorType.kBrushless);
+		elevatorMotor3 = new CANSparkMax(Constants.ELEVATOR_M3_PORT, MotorType.kBrushless);
+
+		elevatorMotors = new SparkMaxMotorGroup("Elevator Motor Group", elevatorMotor1, elevatorMotor2, elevatorMotor3);
+		elevatorShift = new Solenoid(Constants.ELEVATOR_SHIFT_PORT);
+		extendArm = new Solenoid(Constants.EXTEND_ELEVATOR_PORT);
 	}
 }

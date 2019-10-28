@@ -19,6 +19,12 @@ public class Constants {
 	public static final double SCALING_POWER = 2.75;
 	public static final double RAMP_RATE = 0.25; // Seconds to go from 0 to full throttle
 
+	/** ELEVATOR PORTS */
+	public static final int ELEVATOR_M1_PORT = 8;
+	public static final int ELEVATOR_M2_PORT = 9;
+	public static final int ELEVATOR_M3_PORT = 10;
+	public static final int ELEVATOR_SHIFT_PORT = 4; // TBD, Placeholder Value
+	public static final int EXTEND_ELEVATOR_PORT = 8; // TBD, Placeholder Value
 
 	/** JOYSTICK PORTS */
 	public static final int JOYSTICK_1_PORT = 0; // Driver A
