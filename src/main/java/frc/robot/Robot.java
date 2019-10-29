@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.util.OI;
 
 /**
@@ -22,8 +23,9 @@ import frc.robot.util.OI;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static Drive drive;
 	public static Hardware hardware;
+	public static Drive drive;
+	public static Elevator elevator;
 	public static OI oi;
 
 	Command m_autonomousCommand;
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		hardware = new Hardware();
 		drive = new Drive();
+		elevator = new Elevator();
 		oi = new OI();
 	}
 

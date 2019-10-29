@@ -13,7 +13,7 @@ public class Constants {
 	public static final boolean IS_LEFT_INVERTED = true;
 	public static final boolean IS_RIGHT_INVERTED = false;
 	public static final boolean IS_DRIVEBASE_BACKWARDS = true; // Needed so the robot actually thinks the front is
-																	// the front
+																// the front
 	public static final double TURN_SENSITIVITY = 1;
 	public static final double RADIAL_TURN_SENSITIVITY = 20;
 	public static final double SCALING_POWER = 2.75;
@@ -25,6 +25,26 @@ public class Constants {
 	public static final int ELEVATOR_M3_PORT = 10;
 	public static final int ELEVATOR_SHIFT_PORT = 4; // TBD, Placeholder Value
 	public static final int EXTEND_ELEVATOR_PORT = 8; // TBD, Placeholder Value
+	public static final int TOP_LIMIT_SWITCH_PORT = 0; // TBD, Placeholder
+	public static final int BOTTOM_LIMIT_SWITCH_PORT = 1; // TBD, Placeholder
+
+	/** Elevator Constants */
+	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
+															// can make this into inches/meters
+	public static final double ELEVATOR_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
+	public static final double ELEVATOR_I = 0.0;
+	public static final double ELEVATOR_D = 0.0;
+	public static final double ELEVATOR_F = 0.0;
+	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
+
+	/** Elevator Setpoints */
+	public static final double HATCH_LEVEL_1_HEIGHT = 100.0; // TBD, Placeholder Value
+	public static final double HATCH_LEVEL_2_HEIGHT = 300.0; // TBD, Placeholder
+	public static final double HATCH_LEVEL_3_HEIGHT = 500.0; // TBD
+	public static final double CARGO_SHIP_HEIGHT = 200.0; // TBD, Placeholder
+	public static final double CARGO_LEVEL_1_HEIGHT = 150.0; // TBD
+	public static final double CARGO_LEVEL_2_HEIGHT = 350.0; // TBD
+	public static final double CARGO_LEVEL_3_HEIGHT = 600.0; // TBD
 
 	/** JOYSTICK PORTS */
 	public static final int JOYSTICK_1_PORT = 0; // Driver A

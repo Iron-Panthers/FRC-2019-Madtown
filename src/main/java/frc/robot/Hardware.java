@@ -3,6 +3,8 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.util.Constants;
 import frc.robot.util.SparkMaxMotorGroup;
@@ -14,25 +16,19 @@ import frc.robot.util.SparkMaxMotorGroup;
  */
 public class Hardware {
 	/* Drivebase motor controllers */
-	public CANSparkMax driveRight1;
-	public CANSparkMax driveRight2;
-	public CANSparkMax driveLeft1;
-	public CANSparkMax driveLeft2;
+	public CANSparkMax driveRight1, driveRight2;
+	public CANSparkMax driveLeft1, driveLeft2;
 
 	/* Drivebase MotorGroups */
-	public SparkMaxMotorGroup rightDriveMotors;
-	public SparkMaxMotorGroup leftDriveMotors;
+	public SparkMaxMotorGroup rightDriveMotors, leftDriveMotors;
 
 	public Solenoid gearShift;
 	/** Motors/sensors for other subsystems will go down here */
 
 	/* Elevator Motor Controllers */
-	public CANSparkMax elevatorMotor1;
-	public CANSparkMax elevatorMotor2;
-	public CANSparkMax elevatorMotor3;
-
-	public Solenoid elevatorShift;
-	public Solenoid extendArm;
+	public CANSparkMax elevatorMotor1, elevatorMotor2, elevatorMotor3;
+	public Solenoid elevatorShift, extendArm;
+	public DigitalInput topLimit, bottomLimit;
 
 	/* Elevator MotorGroup */
 	public SparkMaxMotorGroup elevatorMotors;
@@ -57,5 +53,8 @@ public class Hardware {
 		elevatorMotors = new SparkMaxMotorGroup("Elevator Motor Group", elevatorMotor1, elevatorMotor2, elevatorMotor3);
 		elevatorShift = new Solenoid(Constants.ELEVATOR_SHIFT_PORT);
 		extendArm = new Solenoid(Constants.EXTEND_ELEVATOR_PORT);
+
+		topLimit = new DigitalInput(Constants.TOP_LIMIT_SWITCH_PORT);
+		bottomLimit = new DigitalInput(Constants.BOTTOM_LIMIT_SWITCH_PORT);
 	}
 }
