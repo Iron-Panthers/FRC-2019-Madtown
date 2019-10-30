@@ -26,6 +26,12 @@ public class Elevator extends Subsystem {
 	private SparkMaxMotorGroup elevatorMotors;
 	private Solenoid elevatorShift, extendArm;
 	private DigitalInput topLimit, bottomLimit;
+	private GearState elevatorGearState;
+
+	// Gear State is used to know which pid mode to use
+	public enum GearState {
+		HIGH, LOW
+	}
 
 	public Elevator() {
 		elevatorMotors = Robot.hardware.elevatorMotors;
@@ -33,24 +39,53 @@ public class Elevator extends Subsystem {
 		extendArm = Robot.hardware.extendArm;
 		topLimit = Robot.hardware.topLimit;
 		bottomLimit = Robot.hardware.bottomLimit;
-		setup();
-	}
-
-	public void setup() {
-		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
-		pidController.setP(Constants.ELEVATOR_P);
-		pidController.setI(Constants.ELEVATOR_I);
-		pidController.setD(Constants.ELEVATOR_D);
-		pidController.setIZone(Constants.ELEVATOR_I_ZONE);
-		pidController.setFF(Constants.ELEVATOR_F);
+		elevatorGearState = GearState.HIGH; // To be tested
+		setupScoring();
+		setupClimbing();
 	}
 
 	/**
-	 * Set the target for the motor using the CANSparkMax position control
-	 * @param rotations Rotations by default, but possible to change with the conversion factor
+	 * Configure the elevator using the PID for high gear/scoring
+	 */
+	public void setupScoring() {
+		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
+		pidController.setP(Constants.ELEVATOR_P, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setI(Constants.ELEVATOR_I, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setD(Constants.ELEVATOR_D, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setIZone(Constants.ELEVATOR_I_ZONE, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setFF(Constants.ELEVATOR_F, Constants.HIGH_GEAR_PID_SLOT);
+	}
+
+	/**
+	 * Configure the elevator using the PID for low gear/climbing
+	 */
+	public void setupClimbing() {
+		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
+		pidController.setP(Constants.ELEVATOR_CLIMB_P, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setI(Constants.ELEVATOR_CLIMB_I, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setD(Constants.ELEVATOR_CLIMB_D, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setIZone(Constants.ELEVATOR_CLIMB_I_ZONE, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
+	}
+
+	/**
+	 * Set the target for the motor using the CANSparkMax position control. Uses the
+	 * slot according to the gear state
+	 * 
+	 * @param rotations Rotations by default, but possible to change with the
+	 *                  conversion factor
 	 */
 	public void setTarget(double rotations) {
-		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition);
+		// Use the slot according to what gear the robot is in
+		int pidSlot = 0;
+		if (elevatorGearState == GearState.HIGH) {
+			pidSlot = Constants.HIGH_GEAR_PID_SLOT;
+		} else if (elevatorGearState == GearState.LOW) {
+			pidSlot = Constants.LOW_GEAR_PID_SLOT;
+		} else {
+			System.out.println("Elevator Gear State Error");
+		}
+		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot);
 	}
 
 	/**
@@ -68,8 +103,8 @@ public class Elevator extends Subsystem {
 	/**
 	 * Lower the elevator unless the bottom limit is pressed
 	 * 
-	 * @param power Power between -1.0 and 0.0 for the power, absolute value used for
-	 *              safety and for limit switches
+	 * @param power Power between -1.0 and 0.0 for the power, absolute value used
+	 *              for safety and for limit switches
 	 */
 	public void lower(double power) {
 		if (!bottomLimit.get()) {
@@ -77,13 +112,20 @@ public class Elevator extends Subsystem {
 		}
 	}
 
+	public void stop() {
+		elevatorMotors.set(0);
+		Robot.elevator.setTarget(Robot.elevator.getPosition());
+	}
+
 	// Needs to be tested
 	public void shiftHigh() {
 		elevatorShift.set(true);
+		elevatorGearState = GearState.HIGH;
 	}
 
 	public void shiftLow() {
 		elevatorShift.set(false);
+		elevatorGearState = GearState.LOW;
 	}
 
 	// Needs to be tested
@@ -95,8 +137,13 @@ public class Elevator extends Subsystem {
 		extendArm.set(false);
 	}
 
+	public double getPosition() {
+		return elevatorMotors.getEncoderPosition();
+	}
+
 	@Override
 	public void initDefaultCommand() {
-		// setDefaultCommand(new ElevatorHoldPosition());
+		// No default needed because setting to target keeps going even when a command
+		// is not running
 	}
 }

@@ -31,11 +31,21 @@ public class Constants {
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
+	// Constants for high gear/scoring
 	public static final double ELEVATOR_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
+	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.35;
+	public static final int HIGH_GEAR_PID_SLOT = 1;
+	// Constants for low gear/climbing
+	public static final double ELEVATOR_CLIMB_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
+	public static final double ELEVATOR_CLIMB_I = 0.0;
+	public static final double ELEVATOR_CLIMB_D = 0.0;
+	public static final double ELEVATOR_CLIMB_F = 0.0;
+	public static final double ELEVATOR_CLIMB_I_ZONE = 0.0; // Range in which I is used
+	public static final int LOW_GEAR_PID_SLOT = 0;
 
 	/** Elevator Setpoints */
 	public static final double HATCH_LEVEL_1_HEIGHT = 100.0; // TBD, Placeholder Value
@@ -48,6 +58,7 @@ public class Constants {
 
 	/** JOYSTICK PORTS */
 	public static final int JOYSTICK_1_PORT = 0; // Driver A
+	public static final int JOYSTICK_2_PORT = 1; // Driver B
 	public static final int REVERSE_DRIVE_PORT = 1;
 	public static final int DRIVE_SHIFT_PORT = 2;
 

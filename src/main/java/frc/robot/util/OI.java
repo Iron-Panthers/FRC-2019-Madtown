@@ -16,14 +16,15 @@ import frc.robot.subsystems.drive.commands.ReverseDrive;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public JoystickWrapper stick1;
+	public JoystickWrapper driveStick;
+	public JoystickWrapper elevatorStick;
 	public JoystickButton reverseDrive, driveShift;
 
 	public OI() {
-		stick1 = new JoystickWrapper(Constants.JOYSTICK_1_PORT);
-		reverseDrive = new JoystickButton(stick1, Constants.REVERSE_DRIVE_PORT);
-		driveShift = new JoystickButton(stick1, Constants.DRIVE_SHIFT_PORT);
-
+		driveStick = new JoystickWrapper(Constants.JOYSTICK_1_PORT);
+		elevatorStick = new JoystickWrapper(Constants.JOYSTICK_2_PORT);
+		reverseDrive = new JoystickButton(driveStick, Constants.REVERSE_DRIVE_PORT);
+		driveShift = new JoystickButton(driveStick, Constants.DRIVE_SHIFT_PORT);
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
 	}
