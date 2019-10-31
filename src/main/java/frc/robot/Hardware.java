@@ -28,7 +28,6 @@ public class Hardware {
 	/* Elevator Motor Controllers */
 	public CANSparkMax elevatorMotor1, elevatorMotor2, elevatorMotor3;
 	public Solenoid elevatorShift, extendArm;
-	public DigitalInput topLimit, bottomLimit;
 
 	/* Elevator MotorGroup */
 	public SparkMaxMotorGroup elevatorMotors;
@@ -53,8 +52,5 @@ public class Hardware {
 		elevatorMotors = new SparkMaxMotorGroup("Elevator Motor Group", elevatorMotor1, elevatorMotor2, elevatorMotor3);
 		elevatorShift = new Solenoid(Constants.ELEVATOR_SHIFT_PORT);
 		extendArm = new Solenoid(Constants.EXTEND_ELEVATOR_PORT);
-
-		topLimit = new DigitalInput(Constants.TOP_LIMIT_SWITCH_PORT);
-		bottomLimit = new DigitalInput(Constants.BOTTOM_LIMIT_SWITCH_PORT);
 	}
 }

@@ -7,10 +7,11 @@
 
 package frc.robot.subsystems.elevator;
 
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
@@ -25,7 +26,7 @@ public class Elevator extends Subsystem {
 	// here. Call these from Commands.
 	private SparkMaxMotorGroup elevatorMotors;
 	private Solenoid elevatorShift, extendArm;
-	private DigitalInput topLimit, bottomLimit;
+	private CANDigitalInput topLimit, bottomLimit;
 	private GearState elevatorGearState;
 
 	// Gear State is used to know which pid mode to use
@@ -37,8 +38,10 @@ public class Elevator extends Subsystem {
 		elevatorMotors = Robot.hardware.elevatorMotors;
 		elevatorShift = Robot.hardware.elevatorShift;
 		extendArm = Robot.hardware.extendArm;
-		topLimit = Robot.hardware.topLimit;
-		bottomLimit = Robot.hardware.bottomLimit;
+		topLimit = elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		bottomLimit = elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		topLimit.enableLimitSwitch(true);
+		bottomLimit.enableLimitSwitch(true);
 		elevatorGearState = GearState.HIGH; // To be tested
 		setupScoring();
 		setupClimbing();
@@ -78,6 +81,7 @@ public class Elevator extends Subsystem {
 	public void setTarget(double rotations) {
 		// Use the slot according to what gear the robot is in
 		int pidSlot = 0;
+		// Adjust gear state for PID
 		if (elevatorGearState == GearState.HIGH) {
 			pidSlot = Constants.HIGH_GEAR_PID_SLOT;
 		} else if (elevatorGearState == GearState.LOW) {
@@ -85,6 +89,12 @@ public class Elevator extends Subsystem {
 		} else {
 			System.out.println("Elevator Gear State Error");
 		}
+		if (topLimit.get()) {
+			setPosition(Constants.TOP_LIMIT_POSITION);
+		} else if (bottomLimit.get()) {
+			setPosition(Constants.BOTTOM_LIMIT_POSITION);
+		}
+		// This will stop in either direction if the limit switch is pressed
 		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot);
 	}
 
@@ -95,8 +105,14 @@ public class Elevator extends Subsystem {
 	 *              safety and for limit switches
 	 */
 	public void raise(double power) {
+		// This should be redundant due to the use of a limit switch attached directly
+		// to the master motor
 		if (!topLimit.get()) {
 			elevatorMotors.set(Math.abs(power));
+		} else {
+			// Stop motors and recalibrate the encoder
+			stop();
+			setPosition(Constants.TOP_LIMIT_POSITION);
 		}
 	}
 
@@ -107,8 +123,13 @@ public class Elevator extends Subsystem {
 	 *              for safety and for limit switches
 	 */
 	public void lower(double power) {
+		// This should be redundant due to the use of a limit switch attached directly
+		// to the master motor
 		if (!bottomLimit.get()) {
 			elevatorMotors.set(-Math.abs(power));
+		} else {
+			stop();
+			setPosition(Constants.BOTTOM_LIMIT_POSITION);
 		}
 	}
 
@@ -139,6 +160,15 @@ public class Elevator extends Subsystem {
 
 	public double getPosition() {
 		return elevatorMotors.getEncoderPosition();
+	}
+
+	/**
+	 * Set the position of the encoder, used for recalibration
+	 * 
+	 * @param rotations Rotations to use for the new encoder position
+	 */
+	public void setPosition(double rotations) {
+		elevatorMotors.getMasterMotor().setEncPosition(rotations);
 	}
 
 	@Override

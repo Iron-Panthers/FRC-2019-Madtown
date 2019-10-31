@@ -31,16 +31,17 @@ public class Constants {
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
+	public static final double TOP_LIMIT_POSITION = 1000.0; // TBD
 	// Constants for high gear/scoring
 	public static final double ELEVATOR_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
-	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.35;
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 	// Constants for low gear/climbing
-	public static final double ELEVATOR_CLIMB_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
+	public static final double ELEVATOR_CLIMB_P = 0.0; // TODO: Tune. The plan is to use the sample code with
+														// shuffleboard
 	public static final double ELEVATOR_CLIMB_I = 0.0;
 	public static final double ELEVATOR_CLIMB_D = 0.0;
 	public static final double ELEVATOR_CLIMB_F = 0.0;
@@ -57,9 +58,21 @@ public class Constants {
 	public static final double CARGO_LEVEL_3_HEIGHT = 600.0; // TBD
 
 	/** JOYSTICK PORTS */
+	/** Driver A */
 	public static final int JOYSTICK_1_PORT = 0; // Driver A
-	public static final int JOYSTICK_2_PORT = 1; // Driver B
 	public static final int REVERSE_DRIVE_PORT = 1;
 	public static final int DRIVE_SHIFT_PORT = 2;
 
+	/** Driver B */
+	public static final int JOYSTICK_2_PORT = 1; // Driver B
+	public static final int MANUAL_ELEVATOR_BUTTON = 1;
+
+	/** INPUT CONSTANTS */
+	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.35;
+	// Thresholds for shifting the elevator using the Z axis on the Joysticks, which
+	// is the throttle. This is to save another button on the very cramped elevator
+	// joystick
+	// TODO: Test if throttle reads from -1 to 1 or from 0 to 1
+	public static final double HIGH_GEAR_SHIFT_THRESHOLD = 0.7;
+	public static final double LOW_GEAR_SHIFT_THRESHOLD = -0.7;
 }

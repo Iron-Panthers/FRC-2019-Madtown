@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.util.Constants;
 import frc.robot.util.OI;
 
 /**
@@ -84,6 +85,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		// Make sure to shift into high gear for driving and elevator
 		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
@@ -124,6 +126,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		// Shift the elevator using the throttle
+		if (oi.elevatorStick.getZ() > Constants.HIGH_GEAR_SHIFT_THRESHOLD) {
+			elevator.shiftHigh();
+		}
+		else if (oi.elevatorStick.getZ() < Constants.LOW_GEAR_SHIFT_THRESHOLD) {
+			
+		}
 	}
 
 	/**

@@ -7,43 +7,28 @@
 
 package frc.robot.subsystems.elevator.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class ElevatorToTarget extends Command {
-	private double rotations;
-	public ElevatorToTarget(double rotations) {
+/**
+ * Add your docs here.
+ */
+public class ElevatorToTarget extends InstantCommand {
+	private double target;
+	/**
+	 * Changes target of subsystem to desired target
+	 */
+	public ElevatorToTarget(double target) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.elevator);
-		this.rotations = rotations;
+		this.target = target;
 	}
 
-	// Called just before this Command runs the first time
+	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.elevator.setTarget(rotations);
+		Robot.elevator.setTarget(target);
 	}
 
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	protected void execute() {
-	}
-
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
-
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {
-	}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-	}
 }
