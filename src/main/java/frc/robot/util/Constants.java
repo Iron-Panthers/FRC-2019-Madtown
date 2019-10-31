@@ -32,6 +32,8 @@ public class Constants {
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
 	public static final double TOP_LIMIT_POSITION = 1000.0; // TBD
+	public static final double ELEVATOR_ROTATION_TOLERANCE = 20.0; // Rotations away from the ends of the elevator to slow down
+	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.125; // TBD, Placeholder
 	// Constants for high gear/scoring
 	public static final double ELEVATOR_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
 	public static final double ELEVATOR_I = 0.0;

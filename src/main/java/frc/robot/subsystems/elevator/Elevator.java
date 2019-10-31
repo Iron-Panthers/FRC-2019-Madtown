@@ -108,7 +108,13 @@ public class Elevator extends Subsystem {
 		// This should be redundant due to the use of a limit switch attached directly
 		// to the master motor
 		if (!topLimit.get()) {
-			elevatorMotors.set(Math.abs(power));
+			// Scale down the power if close to the top. No Math.abs in case the position is
+			// significantly above the top limit due to encoder slippage
+			if ((Constants.TOP_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
+				elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				elevatorMotors.set(Math.abs(power));
+			}
 		} else {
 			// Stop motors and recalibrate the encoder
 			stop();
@@ -126,7 +132,13 @@ public class Elevator extends Subsystem {
 		// This should be redundant due to the use of a limit switch attached directly
 		// to the master motor
 		if (!bottomLimit.get()) {
-			elevatorMotors.set(-Math.abs(power));
+			// Scale down the power if close to the bottom
+			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
+					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
+				elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				elevatorMotors.set(-Math.abs(power));
+			}
 		} else {
 			stop();
 			setPosition(Constants.BOTTOM_LIMIT_POSITION);
