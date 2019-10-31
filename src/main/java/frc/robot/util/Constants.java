@@ -40,6 +40,7 @@ public class Constants {
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 	// Constants for low gear/climbing
+	// All of these are 0 to prevent use of setpoints in low gear
 	public static final double ELEVATOR_CLIMB_P = 0.0; // TODO: Tune. The plan is to use the sample code with
 														// shuffleboard
 	public static final double ELEVATOR_CLIMB_I = 0.0;
@@ -66,6 +67,21 @@ public class Constants {
 	/** Driver B */
 	public static final int JOYSTICK_2_PORT = 1; // Driver B
 	public static final int MANUAL_ELEVATOR_BUTTON = 1;
+	public static final int INTAKE_BUTTON = 2;
+	public static final int OUTTAKE_BUTTON = 3;
+	public static final int HATCH_INTAKE_BUTTON = 5;
+	public static final int HATCH_OUTTAKE_BUTTON = 6;
+
+	/** Cargo Ship Setpoints */
+	public static final int CARGO_SHIP_BUTTON = 4;
+
+	/** Rocket Setpoints */
+	public static final int HATCH_LEVEL_3_BUTTON = 7;
+	public static final int HATCH_LEVEL_2_BUTTON = 9;
+	public static final int HATCH_LEVEL_1_BUTTON = 11;
+	public static final int CARGO_LEVEL_3_BUTTON = 8;
+	public static final int CARGO_LEVEL_2_BUTTON = 10;
+	public static final int CARGO_LEVEL_1_BUTTON = 12;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.35;

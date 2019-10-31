@@ -126,13 +126,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		// Shift the elevator using the throttle
-		if (oi.elevatorStick.getZ() > Constants.HIGH_GEAR_SHIFT_THRESHOLD) {
-			elevator.shiftHigh();
-		}
-		else if (oi.elevatorStick.getZ() < Constants.LOW_GEAR_SHIFT_THRESHOLD) {
+		// // Shift the elevator using the throttle, unnecessary because manual always uses low, and setpoints use high
+		// if (oi.elevatorStick.getZ() > Constants.HIGH_GEAR_SHIFT_THRESHOLD) {
+		// 	elevator.shiftHigh();
+		// }
+		// else if (oi.elevatorStick.getZ() < Constants.LOW_GEAR_SHIFT_THRESHOLD) {
 			
-		}
+		// }
 	}
 
 	/**

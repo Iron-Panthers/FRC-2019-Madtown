@@ -21,6 +21,8 @@ public class ManualElevator extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		// Always use low gear for manual control for safety
+		Robot.elevator.shiftLow(); 
 	}
 
 	// Called repeatedly when this Command is scheduled to run
