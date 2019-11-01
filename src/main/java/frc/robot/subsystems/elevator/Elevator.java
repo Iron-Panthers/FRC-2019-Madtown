@@ -14,8 +14,8 @@ import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.util.Constants;
 import frc.robot.util.SparkMaxMotorGroup;
 
 /**

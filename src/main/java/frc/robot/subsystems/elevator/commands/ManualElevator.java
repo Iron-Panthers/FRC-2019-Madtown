@@ -8,8 +8,8 @@
 package frc.robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.util.Constants;
 
 public class ManualElevator extends Command {
 	public ManualElevator() {
