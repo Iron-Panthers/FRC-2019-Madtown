@@ -100,16 +100,17 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		// 1. Manual control, zero at bottom, find distance to top
 		// 2. PID control, go to a rotation between the top and bottom, use to tune P and F
 		if (topLimit.get()) {
 			System.out.println("Top Limit Encoder Position: " + m_encoder.getPosition());
+			m_encoder.setPosition(175.0);
 		}
 		if (bottomLimit.get()) {
 			System.out.println("Bottom Limit Encoder Position: " + m_encoder.getPosition());
+			m_encoder.setPosition(0.0);
 		}
 		if (zeroElevator.get()) {
-			m_encoder.setPosition(0);
+			m_encoder.setPosition(0.0);
 		}
 		if (manualElevator.get()) {
 			m_motor.set(stick1.getY());
