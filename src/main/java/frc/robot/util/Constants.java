@@ -20,8 +20,8 @@ public class Constants {
 	public static final double RAMP_RATE = 0.25; // Seconds to go from 0 to full throttle
 
 	/** ELEVATOR PORTS */
-	public static final int ELEVATOR_M1_PORT = 8;
-	public static final int ELEVATOR_M2_PORT = 9;
+	public static final int ELEVATOR_M1_PORT = 12;
+	public static final int ELEVATOR_M2_PORT = 11;
 	public static final int ELEVATOR_M3_PORT = 10;
 	public static final int ELEVATOR_SHIFT_PORT = 4; // TBD, Placeholder Value
 	public static final int EXTEND_ELEVATOR_PORT = 8; // TBD, Placeholder Value
