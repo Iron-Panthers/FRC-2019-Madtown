@@ -25,14 +25,16 @@ public class Constants {
 	public static final int ELEVATOR_M3_PORT = 10;
 	public static final int ELEVATOR_SHIFT_PORT = 4; // TBD, Placeholder Value
 	public static final int EXTEND_ELEVATOR_PORT = 8; // TBD, Placeholder Value
-	public static final int TOP_LIMIT_SWITCH_PORT = 0; // TBD, Placeholder
-	public static final int BOTTOM_LIMIT_SWITCH_PORT = 1; // TBD, Placeholder
+
+	/** CLIMB PORTS */
+	public static final int CLIMB_HOOK_PORT = 1; // TBD, Placeholder Value
+	public static final int CLIMB_RELEASE_PORT = 2; // TBD, Placeholder
 
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
-	public static final double TOP_LIMIT_POSITION = 1000.0; // TBD
-	public static final double ELEVATOR_ROTATION_TOLERANCE = 20.0; // Rotations away from the ends of the elevator to slow down
+	public static final double TOP_LIMIT_POSITION = 175.0; // Tested by Ingi 10/31/19
+	public static final double ELEVATOR_ROTATION_TOLERANCE = 10.0; // Rotations away from the ends of the elevator to slow down
 	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.125; // TBD, Placeholder
 	// Constants for high gear/scoring
 	public static final double ELEVATOR_P = 0.0; // TODO: Tune. The plan is to use the sample code with shuffleboard
@@ -52,13 +54,13 @@ public class Constants {
 	public static final int LOW_GEAR_PID_SLOT = 0;
 
 	/** Elevator Setpoints */
-	public static final double HATCH_LEVEL_1_HEIGHT = 100.0; // TBD, Placeholder Value
-	public static final double HATCH_LEVEL_2_HEIGHT = 300.0; // TBD, Placeholder
-	public static final double HATCH_LEVEL_3_HEIGHT = 500.0; // TBD
-	public static final double CARGO_SHIP_HEIGHT = 200.0; // TBD, Placeholder
-	public static final double CARGO_LEVEL_1_HEIGHT = 150.0; // TBD
-	public static final double CARGO_LEVEL_2_HEIGHT = 350.0; // TBD
-	public static final double CARGO_LEVEL_3_HEIGHT = 600.0; // TBD
+	public static final double HATCH_LEVEL_1_HEIGHT = 1.0; // TBD, Placeholder Value
+	public static final double HATCH_LEVEL_2_HEIGHT = 50.0; // TBD, Placeholder
+	public static final double HATCH_LEVEL_3_HEIGHT = 100.0; // TBD
+	public static final double CARGO_SHIP_HEIGHT = 40.0; // TBD, Placeholder
+	public static final double CARGO_LEVEL_1_HEIGHT = 10.0; // TBD
+	public static final double CARGO_LEVEL_2_HEIGHT = 60.0; // TBD
+	public static final double CARGO_LEVEL_3_HEIGHT = 120.0; // TBD
 
 	/** JOYSTICK PORTS */
 	/** Driver A */
