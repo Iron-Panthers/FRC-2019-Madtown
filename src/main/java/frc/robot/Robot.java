@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANEncoder;
@@ -16,6 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,12 @@ public class Robot extends TimedRobot {
 	private static final int deviceID = 12;
 	private static final int follower2ID = 11;
 	private static final int follower3ID = 10;
+	private static final int intakeMotorPort = 31;
+	private static final int elevatorShiftPort = 4;
+	private static final int hatchPistonPort = 3;
+	private static final int yeetHatchPort = 2;
+	private static final int climbReleasePort = 5;
+	private static final int climbHookPort = 7;
 	private CANSparkMax m_motor;
 	private CANSparkMax follower2;
 	private CANSparkMax follower3;
@@ -32,6 +40,13 @@ public class Robot extends TimedRobot {
 	private CANDigitalInput topLimit, bottomLimit;
 	public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 	public static final double topEncoderPosition = 0.0;
+	public static Solenoid elevatorShift;
+	public static Solenoid hatchPiston;
+	public static Solenoid yeetHatchPiston;
+	public static Solenoid climbReleasePiston;
+	public static Solenoid
+	public static TalonSRX intakeMotor;
+	
 
 	private static Joystick stick1;
 	private static JoystickButton manualElevator;
@@ -46,6 +61,10 @@ public class Robot extends TimedRobot {
 		m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
 		follower2 = new CANSparkMax(follower2ID, MotorType.kBrushless);
 		follower3 = new CANSparkMax(follower3ID, MotorType.kBrushless);
+		elevatorShift = new Solenoid(elevatorShiftPort);
+		hatchPiston = new Solenoid(hatchPistonPort);
+		yeetHatchPiston = new Solenoid(yeetHatchPort);
+		intakeMotor = new TalonSRX(intakeMotorPort);
 		/**
 		 * The restoreFactoryDefaults method can be used to reset the configuration
 		 * parameters in the SPARK MAX to their factory default state. If no argument is
