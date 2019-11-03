@@ -34,6 +34,7 @@ public class Climb extends Subsystem {
 		rightWinch = new TalonSRX(Constants.CANIDs.RIGHT_WINCH);
 		rightWinch.setInverted(Constants.IS_RIGHT_WINCH_INVERTED);
 		vacuumMotor = new TalonSRX(Constants.CANIDs.VACUUM_PORT);
+		vacuumMotor.setInverted(Constants.IS_VACUUM_MOTOR_INVERTED);
 		pressureSensor = new AnalogInput(Constants.DigitalAnalogIDs.PRESSURE_SENSOR_PORT);
 	}
 
