@@ -105,8 +105,8 @@ public class Constants {
 	public static final double CARGO_LEVEL_3_HEIGHT = 45.95;
 
 	/** CLIMB CONSTANTS */
-	public static final double WINCH_RAISE_POWER = 0.3;
-	public static final double WINCH_LOWER_POWER = -0.3;
+	public static final double WINCH_RAISE_POWER = 0.6;
+	public static final double WINCH_LOWER_POWER = -0.6;
 	public static final boolean IS_RIGHT_WINCH_INVERTED = false;
 	public static final boolean IS_LEFT_WINCH_INVERTED = true;
 
