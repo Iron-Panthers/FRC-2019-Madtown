@@ -40,6 +40,7 @@ public class Climb extends Subsystem {
 
 	public void useClimbRelease(boolean isReleasing) {
 		climbRelease.set(isReleasing);
+		// Release extends, and vice versa. Needs renaming
 	}
 
 	public void succ() {
