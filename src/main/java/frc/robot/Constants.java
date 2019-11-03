@@ -108,7 +108,7 @@ public class Constants {
 	public static final double WINCH_RAISE_POWER = 0.3;
 	public static final double WINCH_LOWER_POWER = -0.3;
 	public static final boolean IS_RIGHT_WINCH_INVERTED = false;
-	public static final boolean IS_LEFT_WINCH_INVERTED = false;
+	public static final boolean IS_LEFT_WINCH_INVERTED = true;
 
 	public static final double VACUUM_POWER = 0.5;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
