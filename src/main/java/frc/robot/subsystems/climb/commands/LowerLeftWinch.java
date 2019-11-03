@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.climb.subsystems;
+package frc.robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RaiseLeftWinch extends Command {
-	public RaiseLeftWinch() {
+public class LowerLeftWinch extends Command {
+	public LowerLeftWinch() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.climb);
@@ -25,7 +25,7 @@ public class RaiseLeftWinch extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.climb.raiseLeftWinch();
+		Robot.climb.lowerLeftWinch();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

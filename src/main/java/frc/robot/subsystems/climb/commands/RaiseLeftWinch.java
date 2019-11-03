@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.climb.subsystems;
+package frc.robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RaiseRightWinch extends Command {
-	public RaiseRightWinch() {
+public class RaiseLeftWinch extends Command {
+	public RaiseLeftWinch() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.climb);
@@ -25,7 +25,7 @@ public class RaiseRightWinch extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.climb.raiseRightWinch();
+		Robot.climb.raiseLeftWinch();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -37,13 +37,13 @@ public class RaiseRightWinch extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.climb.stopRightWinch();
+		Robot.climb.stopLeftWinch();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.climb.stopRightWinch();
+		Robot.climb.stopLeftWinch();
 	}
 }

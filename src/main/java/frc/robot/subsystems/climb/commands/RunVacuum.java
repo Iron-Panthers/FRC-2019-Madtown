@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.climb.subsystems;
+package frc.robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class LowerLeftWinch extends Command {
-	public LowerLeftWinch() {
+public class RunVacuum extends Command {
+	public RunVacuum() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.climb);
@@ -25,7 +25,8 @@ public class LowerLeftWinch extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.climb.lowerLeftWinch();
+		System.out.println("Succ command");
+		Robot.climb.succ();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -37,13 +38,13 @@ public class LowerLeftWinch extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.climb.stopLeftWinch();
+		Robot.climb.stopSucc();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.climb.stopLeftWinch();
+		Robot.climb.stopSucc();
 	}
 }

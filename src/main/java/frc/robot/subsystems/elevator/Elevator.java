@@ -63,6 +63,7 @@ public class Elevator extends Subsystem {
 		pidController.setD(Constants.ELEVATOR_D, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setIZone(Constants.ELEVATOR_I_ZONE, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_F, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setOutputRange(Constants.ELEVATOR_MIN_OUTPUT, Constants.ELEVATOR_MAX_OUTPUT, Constants.HIGH_GEAR_PID_SLOT);
 	}
 
 	/**

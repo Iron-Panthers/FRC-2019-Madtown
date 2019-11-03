@@ -1,13 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.subsystems.climb.subsystems.EngageClimb;
-import frc.robot.subsystems.climb.subsystems.LowerLeftWinch;
-import frc.robot.subsystems.climb.subsystems.LowerRightWinch;
-import frc.robot.subsystems.climb.subsystems.RaiseLeftWinch;
-import frc.robot.subsystems.climb.subsystems.RaiseRightWinch;
-import frc.robot.subsystems.climb.subsystems.ReleaseClimb;
-import frc.robot.subsystems.climb.subsystems.RunVacuum;
+import frc.robot.subsystems.climb.commands.EngageClimb;
+import frc.robot.subsystems.climb.commands.LowerLeftWinch;
+import frc.robot.subsystems.climb.commands.LowerRightWinch;
+import frc.robot.subsystems.climb.commands.RaiseLeftWinch;
+import frc.robot.subsystems.climb.commands.RaiseRightWinch;
+import frc.robot.subsystems.climb.commands.ReleaseClimb;
+import frc.robot.subsystems.climb.commands.RunVacuum;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
 import frc.robot.subsystems.elevator.commands.ManualElevator;

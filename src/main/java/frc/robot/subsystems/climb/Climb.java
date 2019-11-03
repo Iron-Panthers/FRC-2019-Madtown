@@ -43,6 +43,7 @@ public class Climb extends Subsystem {
 
 	public void succ() {
 		vacuumMotor.set(ControlMode.PercentOutput, Constants.VACUUM_POWER);
+		System.out.println("Succing");
 	}
 
 	public void stopSucc() {

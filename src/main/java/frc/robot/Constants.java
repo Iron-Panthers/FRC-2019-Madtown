@@ -82,6 +82,8 @@ public class Constants {
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
+	public static final double ELEVATOR_MIN_OUTPUT = -0.75;
+	public static final double ELEVATOR_MAX_OUTPUT = 0.75;
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 
 	// Constants for low gear/climbing. ALWAYS ZERO TO PREVENT LOW GEAR POSITION CONTROL
@@ -109,7 +111,7 @@ public class Constants {
 	public static final boolean IS_LEFT_WINCH_INVERTED = false;
 
 	public static final double VACUUM_POWER = 0.5;
-	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
+	public static final boolean IS_VACUUM_MOTOR_INVERTED = true;
 	public static final double PRESSURE_SENSOR_RESISTANCE = 250.0; // Ohms, Needs Testing
 	public static final double MAX_PSI_READING = 14.5;
 	public static final double MAX_MILLIAMP_READING = 20.0;
