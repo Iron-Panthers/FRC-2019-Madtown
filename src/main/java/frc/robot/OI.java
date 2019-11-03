@@ -79,9 +79,9 @@ public class OI {
 
 		/** DRIVER B */
 		toggleIntakeHeight.whenPressed(new ToggleIntakeHeight());
-		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, true));
-		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, true));
-		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, true));
+		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, false));
+		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, false));
+		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, false));
 		cargoLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_1_HEIGHT, true));
 		cargoLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_2_HEIGHT, true));
 		cargoLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_3_HEIGHT, true));
