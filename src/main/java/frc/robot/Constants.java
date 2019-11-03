@@ -93,7 +93,7 @@ public class Constants {
 	public static final double CARGO_SHIP_HEIGHT = 20.0;
 	public static final double CARGO_LEVEL_1_HEIGHT = 1.0;
 	public static final double CARGO_LEVEL_2_HEIGHT = 25.5;
-	public static final double CARGO_LEVEL_3_HEIGHT = 45.0;
+	public static final double CARGO_LEVEL_3_HEIGHT = 45.95;
 
 	/** CLIMB CONSTANTS */
 	public static final double WINCH_RAISE_POWER = 0.3;

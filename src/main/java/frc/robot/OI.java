@@ -54,8 +54,8 @@ public class OI {
 
 		intakeCargo = new JoystickButton(driverBController, 2);
 		outtakeCargo = new JoystickButton(driverBController, 3);
-		intakeHatch = new JoystickButton(driverBController, 5);
-		outtakeHatch = new JoystickButton(driverBController, 6);
+		intakeHatch = new JoystickButton(driverBController, 6);
+		outtakeHatch = new JoystickButton(driverBController, 5);
 		// We are short buttons to extend and retract the arm
 
 		/** CLIMB */
