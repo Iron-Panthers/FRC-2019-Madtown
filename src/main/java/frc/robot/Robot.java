@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		System.out.println("Elevator Position: " + elevator.getPosition());
 	}
 
 	/**

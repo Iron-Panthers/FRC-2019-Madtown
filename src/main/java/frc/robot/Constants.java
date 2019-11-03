@@ -18,10 +18,10 @@ public class Constants {
 		private CANIDs() {
 		}
 
-		public static final int DRIVE_R1_PORT = 1;
-		public static final int DRIVE_R2_PORT = 21;
-		public static final int DRIVE_L1_PORT = 2;
-		public static final int DRIVE_L2_PORT = 22;
+		public static final int DRIVE_R1_PORT = 2;
+		public static final int DRIVE_R2_PORT = 22;
+		public static final int DRIVE_L1_PORT = 1;
+		public static final int DRIVE_L2_PORT = 21;
 
 		public static final int ELEVATOR_M1 = 12;
 		public static final int ELEVATOR_M2 = 11;
