@@ -21,20 +21,18 @@ public class ManualElevator extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		// Always use low gear for manual control for safety
-		Robot.elevator.shiftLow(); 
+		Robot.elevator.shiftLow();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double y = Robot.oi.elevatorStick.getY();
+		double y = Robot.oi.driverBController.getY();
 		y *= Constants.ELEVATOR_MANUAL_POWER_SCALAR;
 		// If positive, raise the elevator
 		if (y > 0) {
 			Robot.elevator.raise(y);
-		}
-		else {
+		} else {
 			Robot.elevator.lower(y);
 		}
 	}

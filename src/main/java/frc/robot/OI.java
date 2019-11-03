@@ -1,18 +1,14 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
-import frc.robot.subsystems.elevator.commands.ElevatorToTarget;
 import frc.robot.subsystems.elevator.commands.ManualElevator;
+import frc.robot.subsystems.superstructure.commands.CargoCommand;
+import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
+import frc.robot.subsystems.superstructure.commands.IntakeHatch;
+import frc.robot.subsystems.superstructure.commands.OuttakeHatch;
 import frc.robot.util.JoystickWrapper;
 
 /**
@@ -20,64 +16,72 @@ import frc.robot.util.JoystickWrapper;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public JoystickWrapper driveStick;
-	public JoystickWrapper elevatorStick;
-	public JoystickButton reverseDrive, driveShift;
-	public JoystickButton manualElevator;
-	public JoystickButton hatchLevel1, hatchLevel2, hatchLevel3, cargoLevel1, cargoLevel2, cargoLevel3, cargoShipHeight;
-	public JoystickButton intakeCargo, outtakeCargo, intakeHatch, outtakeHatch;
+	public final JoystickWrapper driverAController;
+	public final JoystickWrapper driverBController;
+	public final JoystickButton reverseDrive, driveShift;
+	public final JoystickButton useManualElevator;
+	public final JoystickButton hatchLevel1;
+	public final JoystickButton hatchLevel2;
+	public final JoystickButton hatchLevel3;
+	public final JoystickButton cargoLevel1;
+	public final JoystickButton cargoLevel2;
+	public final JoystickButton cargoLevel3;
+	public final JoystickButton cargoShipHeight;
+	public final JoystickButton intakeCargo;
+	public final JoystickButton outtakeCargo;
+	public final JoystickButton intakeHatch;
+	public final JoystickButton outtakeHatch;
 
 	public OI() {
 		/** DRIVER A */
-		driveStick = new JoystickWrapper(Constants.JOYSTICK_1_PORT);
-		reverseDrive = new JoystickButton(driveStick, Constants.REVERSE_DRIVE_PORT);
-		driveShift = new JoystickButton(driveStick, Constants.DRIVE_SHIFT_PORT);
+		driverAController = new JoystickWrapper(0);
+		reverseDrive = new JoystickButton(driverAController, 1);
+		driveShift = new JoystickButton(driverAController, 2);
 
+		/** DRIVER B */
+		driverBController = new JoystickWrapper(1);
+		useManualElevator = new JoystickButton(driverBController, 1);
+		hatchLevel1 = new JoystickButton(driverBController, 11);
+		hatchLevel2 = new JoystickButton(driverBController, 9);
+		hatchLevel3 = new JoystickButton(driverBController, 7);
+		cargoLevel1 = new JoystickButton(driverBController, 12);
+		cargoLevel2 = new JoystickButton(driverBController, 10);
+		cargoLevel3 = new JoystickButton(driverBController, 8);
+		cargoShipHeight = new JoystickButton(driverBController, 4);
+
+		intakeCargo = new JoystickButton(driverBController, 2);
+		outtakeCargo = new JoystickButton(driverBController, 3);
+		intakeHatch = new JoystickButton(driverBController, 5);
+		outtakeHatch = new JoystickButton(driverBController, 6);
+
+		configureButtonBindings();
+	}
+
+	/**
+	 * Use this method to define your button->command mappings. Buttons can be
+	 * created by instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of
+	 * its subclasses ({@link edu.wpi.first.wpilibj.Joystick} or
+	 * {@link edu.wpi.first.wpilibj.XboxController}), and passing these GenericHID
+	 * to {@link JoystickButton}.
+	 */
+	private void configureButtonBindings() {
+		/** DRIVER A */
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
 
 		/** DRIVER B */
-		elevatorStick = new JoystickWrapper(Constants.JOYSTICK_2_PORT);
-		manualElevator = new JoystickButton(elevatorStick, Constants.MANUAL_ELEVATOR_BUTTON);
-		hatchLevel1 = new JoystickButton(elevatorStick, Constants.HATCH_LEVEL_1_BUTTON);
-		hatchLevel2 = new JoystickButton(elevatorStick, Constants.HATCH_LEVEL_2_BUTTON);
-		hatchLevel3 = new JoystickButton(elevatorStick, Constants.HATCH_LEVEL_3_BUTTON);
-		cargoLevel1 = new JoystickButton(elevatorStick, Constants.CARGO_LEVEL_1_BUTTON);
-		cargoLevel2 = new JoystickButton(elevatorStick, Constants.CARGO_LEVEL_2_BUTTON);
-		cargoLevel3 = new JoystickButton(elevatorStick, Constants.CARGO_LEVEL_3_BUTTON);
-		cargoShipHeight = new JoystickButton(elevatorStick, Constants.CARGO_SHIP_BUTTON);
-		intakeCargo = new JoystickButton(elevatorStick, Constants.INTAKE_BUTTON);
-		outtakeCargo = new JoystickButton(elevatorStick, Constants.OUTTAKE_BUTTON);
-		intakeHatch = new JoystickButton(elevatorStick, Constants.HATCH_INTAKE_BUTTON);
-		outtakeHatch = new JoystickButton(elevatorStick, Constants.HATCH_OUTTAKE_BUTTON);
+		useManualElevator.whileHeld(new ManualElevator());
+		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, true));
+		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, true));
+		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, true));
+		cargoLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_1_HEIGHT, true));
+		cargoLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_2_HEIGHT, true));
+		cargoLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_LEVEL_3_HEIGHT, true));
+		cargoShipHeight.whenPressed(new ElevatorAndIntakeHeight(Constants.CARGO_SHIP_HEIGHT, false));
 
-		manualElevator.whileHeld(new ManualElevator());
-		hatchLevel1.whenPressed(new ElevatorToTarget(Constants.HATCH_LEVEL_1_BUTTON));
-		hatchLevel2.whenPressed(new ElevatorToTarget(Constants.HATCH_LEVEL_2_HEIGHT));
-		hatchLevel3.whenPressed(new ElevatorToTarget(Constants.HATCH_LEVEL_3_HEIGHT));
-		cargoLevel1.whenPressed(new ElevatorToTarget(Constants.CARGO_LEVEL_1_HEIGHT));
-		cargoLevel2.whenPressed(new ElevatorToTarget(Constants.CARGO_LEVEL_2_HEIGHT));
-		cargoLevel3.whenPressed(new ElevatorToTarget(Constants.CARGO_LEVEL_3_HEIGHT));
-		cargoShipHeight.whenPressed(new ElevatorToTarget(Constants.CARGO_SHIP_HEIGHT));
-		// intakeCargo.whileHeld(new )
+		intakeHatch.whenPressed(new IntakeHatch());
+		outtakeHatch.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
+		intakeCargo.whenPressed(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		outtakeCargo.whenPressed(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
 	}
-	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
-	// commands the same as any other Button.
-
-	//// TRIGGERING COMMANDS WITH BUTTONS
-	// Once you have a button, it's trivial to bind it to a button in one of
-	// three ways:
-
-	// Start the command when the button is pressed and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenPressed(new ExampleCommand());
-
-	// Run the command while the button is being held down and interrupt it once
-	// the button is released.
-	// button.whileHeld(new ExampleCommand());
-
-	// Start the command when the button is released and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenReleased(new ExampleCommand());
 }

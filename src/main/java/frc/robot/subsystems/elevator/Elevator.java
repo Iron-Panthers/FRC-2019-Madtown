@@ -9,8 +9,10 @@ package frc.robot.subsystems.elevator;
 
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,14 +21,12 @@ import frc.robot.Robot;
 import frc.robot.util.SparkMaxMotorGroup;
 
 /**
- * Add your docs here.
+ * The subsystem responsible for controlling the robot's elevator.
  */
 public class Elevator extends Subsystem {
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-	private SparkMaxMotorGroup elevatorMotors;
-	private Solenoid elevatorShift, extendArm;
-	private CANDigitalInput topLimit, bottomLimit;
+	private final SparkMaxMotorGroup elevatorMotors;
+	private final Solenoid elevatorShift;
+	private final CANDigitalInput topLimit, bottomLimit;
 	private GearState elevatorGearState;
 
 	// Gear State is used to know which pid mode to use
@@ -35,22 +35,38 @@ public class Elevator extends Subsystem {
 	}
 
 	public Elevator() {
-		elevatorMotors = Robot.hardware.elevatorMotors;
-		elevatorShift = Robot.hardware.elevatorShift;
-		extendArm = Robot.hardware.extendArm;
+		final CANSparkMax elevatorMotor1 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M1, MotorType.kBrushless);
+		final CANSparkMax elevatorMotor2 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M2, MotorType.kBrushless);
+		final CANSparkMax elevatorMotor3 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M3, MotorType.kBrushless);
+
+		elevatorMotors = new SparkMaxMotorGroup("Elevator Motor Group", elevatorMotor1, elevatorMotor2, elevatorMotor3);
+
+		elevatorShift = new Solenoid(Constants.PCMIDs.ELEVATOR_SHIFT);
+
+		// Use limit switch(es) with master motor controller at the "board level"
+		// This prevents movement upwards/positive percentoutputs when the top limit is
+		// triggered, and does the same for negative percentoutputs when the bottom is
+		// triggered.
 		topLimit = elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 		bottomLimit = elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 		topLimit.enableLimitSwitch(true);
 		bottomLimit.enableLimitSwitch(true);
-		elevatorGearState = GearState.HIGH; // To be tested
-		setupScoring();
-		setupClimbing();
+
+		elevatorMotors.setInverted(false);
+
+		// Assume that the elevator is in its high gear when the robot program
+		// initializes
+		elevatorGearState = GearState.HIGH;
+
+		// Populate PID slots with the low-gear and high-gear gains
+		configureHighGearPID();
+		configureLowGearPID();
 	}
 
 	/**
-	 * Configure the elevator using the PID for high gear/scoring
+	 * Configure the elevator using the PID for high gear/scoring.
 	 */
-	public void setupScoring() {
+	public void configureHighGearPID() {
 		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
 		pidController.setP(Constants.ELEVATOR_P, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setI(Constants.ELEVATOR_I, Constants.HIGH_GEAR_PID_SLOT);
@@ -60,9 +76,9 @@ public class Elevator extends Subsystem {
 	}
 
 	/**
-	 * Configure the elevator using the PID for low gear/climbing
+	 * Configure the elevator using the PID for low gear/climbing.
 	 */
-	public void setupClimbing() {
+	public void configureLowGearPID() {
 		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
 		pidController.setP(Constants.ELEVATOR_CLIMB_P, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setI(Constants.ELEVATOR_CLIMB_I, Constants.LOW_GEAR_PID_SLOT);
@@ -75,27 +91,25 @@ public class Elevator extends Subsystem {
 	 * Set the target for the motor using the CANSparkMax position control. Uses the
 	 * slot according to the gear state
 	 * 
-	 * @param rotations Rotations by default, but possible to change with the
-	 *                  conversion factor
+	 * @param rotations Encoder rotations/revolutions demand.
 	 */
 	public void setTarget(double rotations) {
-		// Use the slot according to what gear the robot is in
-		int pidSlot = 0;
-		// Adjust gear state for PID
-		if (elevatorGearState == GearState.HIGH) {
-			pidSlot = Constants.HIGH_GEAR_PID_SLOT;
-		} else if (elevatorGearState == GearState.LOW) {
-			pidSlot = Constants.LOW_GEAR_PID_SLOT;
-		} else {
-			System.out.println("Elevator Gear State Error");
-		}
+		final int pidSlot = elevatorGearState == GearState.HIGH ? Constants.HIGH_GEAR_PID_SLOT
+				: Constants.LOW_GEAR_PID_SLOT;
+
 		if (topLimit.get()) {
 			setPosition(Constants.TOP_LIMIT_POSITION);
 		} else if (bottomLimit.get()) {
 			setPosition(Constants.BOTTOM_LIMIT_POSITION);
 		}
-		// This will stop in either direction if the limit switch is pressed
-		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot);
+
+		// Set a controller reference value, using the desired number of rotations
+		// We also specify ControlType.kPosition, which defines the correct underlying
+		// control type to use.
+		// PIDSlot defines the set of PID gains to be used to achieve/maintain the
+		// position given.
+		// The `0.0` at the end declares that there is no arbitrary feedforward.
+		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot, 0.0);
 	}
 
 	/**
@@ -105,20 +119,10 @@ public class Elevator extends Subsystem {
 	 *              safety and for limit switches
 	 */
 	public void raise(double power) {
-		// This should be redundant due to the use of a limit switch attached directly
-		// to the master motor
-		if (!topLimit.get()) {
-			// Scale down the power if close to the top. No Math.abs in case the position is
-			// significantly above the top limit due to encoder slippage
-			if ((Constants.TOP_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-				elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
-			} else {
-				elevatorMotors.set(Math.abs(power));
-			}
+		if ((Constants.TOP_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
+			elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
 		} else {
-			// Stop motors and recalibrate the encoder
-			stop();
-			setPosition(Constants.TOP_LIMIT_POSITION);
+			elevatorMotors.set(Math.abs(power));
 		}
 	}
 
@@ -129,24 +133,16 @@ public class Elevator extends Subsystem {
 	 *              for safety and for limit switches
 	 */
 	public void lower(double power) {
-		// This should be redundant due to the use of a limit switch attached directly
-		// to the master motor
-		if (!bottomLimit.get()) {
-			// Scale down the power if close to the bottom
-			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
-					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-				elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
-			} else {
-				elevatorMotors.set(-Math.abs(power));
-			}
+		if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
+				- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
+			elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
 		} else {
-			stop();
-			setPosition(Constants.BOTTOM_LIMIT_POSITION);
+			elevatorMotors.set(-Math.abs(power));
 		}
 	}
 
 	public void stop() {
-		elevatorMotors.set(0);
+		elevatorMotors.set(0.0);
 		Robot.elevator.setTarget(Robot.elevator.getPosition());
 	}
 
@@ -159,15 +155,6 @@ public class Elevator extends Subsystem {
 	public void shiftLow() {
 		elevatorShift.set(false);
 		elevatorGearState = GearState.LOW;
-	}
-
-	// Needs to be tested
-	public void extendArm() {
-		extendArm.set(true);
-	}
-
-	public void retractArm() {
-		extendArm.set(false);
 	}
 
 	public double getPosition() {

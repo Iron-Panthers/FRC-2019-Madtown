@@ -14,7 +14,7 @@ import frc.robot.util.JoystickWrapper;
 public class ArcadeDrive extends Command {
 
 	private double leftPower, rightPower;
-	private JoystickWrapper stick = Robot.oi.driveStick;
+	private JoystickWrapper stick = Robot.oi.driverAController;
 
 	public ArcadeDrive() {
 		requires(Robot.drive);

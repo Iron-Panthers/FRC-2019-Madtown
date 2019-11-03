@@ -7,11 +7,13 @@
 
 package frc.robot.subsystems.drive;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.subsystems.drive.commands.ArcadeDrive;
 import frc.robot.util.SparkMaxMotorGroup;
 
@@ -20,9 +22,9 @@ import frc.robot.util.SparkMaxMotorGroup;
  * drivebase motors.
  */
 public class Drive extends Subsystem {
-	private SparkMaxMotorGroup left;
-	private SparkMaxMotorGroup right;
-	private Solenoid gearShift;
+	private final SparkMaxMotorGroup left;
+	private final SparkMaxMotorGroup right;
+	private final Solenoid gearShift;
 	private boolean isReversed;
 
 	/**
@@ -30,9 +32,15 @@ public class Drive extends Subsystem {
 	 * and right drive motorgroups to values specified in constants.
 	 */
 	public Drive() {
-		left = Robot.hardware.leftDriveMotors;
-		right = Robot.hardware.rightDriveMotors;
-		gearShift = Robot.hardware.gearShift;
+		final CANSparkMax driveLeft1 = new CANSparkMax(Constants.CANIDs.DRIVE_L1_PORT, MotorType.kBrushless);
+		final CANSparkMax driveLeft2 = new CANSparkMax(Constants.CANIDs.DRIVE_L2_PORT, MotorType.kBrushless);
+		final CANSparkMax driveRight1 = new CANSparkMax(Constants.CANIDs.DRIVE_R1_PORT, MotorType.kBrushless);
+		final CANSparkMax driveRight2 = new CANSparkMax(Constants.CANIDs.DRIVE_R2_PORT, MotorType.kBrushless);
+
+		left = new SparkMaxMotorGroup("Elevator/left", driveLeft1, driveLeft2);
+		right = new SparkMaxMotorGroup("Elevator/right", driveRight1, driveRight2);
+
+		gearShift = new Solenoid(Constants.PCMIDs.DRIVE_GEAR_SHIFT);
 
 		left.setInverted(Constants.IS_LEFT_INVERTED);
 		right.setInverted(Constants.IS_RIGHT_INVERTED);
@@ -76,16 +84,17 @@ public class Drive extends Subsystem {
 	/**
 	 * @return The velocity of the motor in RPM
 	 */
-	public double getLeftVelocity(){
+	public double getLeftVelocity() {
 		return left.getMasterMotor().getEncoder().getVelocity();
 	}
 
 	/**
 	 * @return The velocity of the motor in RPM
 	 */
-	public double getRightVelocity(){
+	public double getRightVelocity() {
 		return right.getMasterMotor().getEncoder().getVelocity();
 	}
+
 	/**
 	 * @return the encoder position of the left encoder, in encoder revolutions.
 	 */
