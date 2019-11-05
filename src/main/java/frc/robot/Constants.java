@@ -56,13 +56,13 @@ public class Constants {
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
-	public static final double TOP_LIMIT_POSITION = 175.0; // Tested by Ingi 10/31/19
+	public static final double TOP_LIMIT_POSITION = 46.2; // Tested by James 11/5/19 // 172.0 is for low gear // Tested by Ingi 10/31/19
 	public static final double ELEVATOR_ROTATION_TOLERANCE = 10.0; // Rotations away from the ends of the elevator to
-																	// slow down
+																	// slow down. This will be inaccurate because the motors spin more rotations per inch in low gear during manual control. The manual input scalar will be better for this
 	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.125; // TBD, Placeholder
 
 	// Constants for high gear/scoring
-	public static final double ELEVATOR_P = 0.0;
+	public static final double ELEVATOR_P = 0.075;;
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
@@ -80,15 +80,15 @@ public class Constants {
 	/** Elevator Setpoints */
 	// TODO these are all placeholder values. They should be tuned tomorrow/Monday
 	public static final double HATCH_LEVEL_1_HEIGHT = 1.0;
-	public static final double HATCH_LEVEL_2_HEIGHT = 50.0;
-	public static final double HATCH_LEVEL_3_HEIGHT = 100.0;
-	public static final double CARGO_SHIP_HEIGHT = 40.0;
+	public static final double HATCH_LEVEL_2_HEIGHT = 20.0;
+	public static final double HATCH_LEVEL_3_HEIGHT = 40.0;
+	public static final double CARGO_SHIP_HEIGHT = 20.0;
 	public static final double CARGO_LEVEL_1_HEIGHT = 10.0;
-	public static final double CARGO_LEVEL_2_HEIGHT = 60.0;
-	public static final double CARGO_LEVEL_3_HEIGHT = 120.0;
+	public static final double CARGO_LEVEL_2_HEIGHT = 30.0;
+	public static final double CARGO_LEVEL_3_HEIGHT = 45.0;
 
 	/** INPUT CONSTANTS */
-	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.35;
+	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.5;
 	public static final double CARGO_INTAKE_INPUT_MAGNITUDE = 0.25;
 	/**
 	 * Seconds
