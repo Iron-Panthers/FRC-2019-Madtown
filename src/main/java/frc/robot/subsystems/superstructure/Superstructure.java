@@ -22,7 +22,7 @@ public class Superstructure extends Subsystem {
     }
 
     public void useHatchFingers(boolean releasing) {
-        m_hatchFingers.set(releasing);
+        m_hatchFingers.set(!releasing);
     }
 
     public void useHatchEjectors(boolean extending) {
@@ -30,7 +30,7 @@ public class Superstructure extends Subsystem {
     }
 
     public void setIntakeHeight(boolean isHigh) {
-        m_intakeHeight.set(isHigh);
+        m_intakeHeight.set(!isHigh);
     }
 
     public void setCargoIntakePercentOutput(double percentOutput) {
