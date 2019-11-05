@@ -34,8 +34,36 @@ public class Climb extends Subsystem {
 		vacuumMotor = new TalonSRX(Constants.CANIDs.VACUUM_PORT);
 	}
 
+	public void useClimbRelease(boolean isReleasing) {
+		climbRelease.set(isReleasing);
+	}
+
+	public void succ() {
+		vacuumMotor.set(ControlMode.PercentOutput, Constants.VACUUM_POWER);
+	}
+
 	public void raiseLeftWinch() {
 		leftWinch.set(ControlMode.PercentOutput, Math.abs(Constants.WINCH_RAISE_POWER));
+	}
+
+	public void lowerLeftWinch() {
+		leftWinch.set(ControlMode.PercentOutput, -Math.abs(Constants.WINCH_LOWER_POWER));
+	}
+
+	public void stopLeftWinch() {
+		leftWinch.set(ControlMode.PercentOutput, 0);
+	}
+
+	public void raiseRightWinch() {
+		rightWinch.set(ControlMode.PercentOutput, Math.abs(Constants.WINCH_RAISE_POWER));
+	}
+
+	public void lowerRightWinch() {
+		rightWinch.set(ControlMode.PercentOutput, -Math.abs(Constants.WINCH_LOWER_POWER));
+	}
+
+	public void stopRightWinch() {
+		rightWinch.set(ControlMode.PercentOutput, 0);
 	}
 
 	@Override

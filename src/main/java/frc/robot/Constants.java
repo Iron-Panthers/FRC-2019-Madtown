@@ -30,8 +30,8 @@ public class Constants {
 		public static final int INTAKE = 4;
 
 		/** TODO: Check */
-		public static final int LEFT_WINCH = 31;
-		public static final int RIGHT_WINCH = 32;
+		public static final int LEFT_WINCH = 30; // Based on orientation where the battery is the front
+		public static final int RIGHT_WINCH = 31; // See above
 		public static final int VACUUM_PORT = 7;
 	}
 
@@ -100,6 +100,9 @@ public class Constants {
 	public static final double WINCH_LOWER_POWER = -0.3;
 	public static final boolean IS_RIGHT_WINCH_INVERTED = false;
 	public static final boolean IS_LEFT_WINCH_INVERTED = false;
+
+	public static final double VACUUM_POWER = 0.5;
+	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.5;

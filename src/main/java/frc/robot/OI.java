@@ -7,7 +7,6 @@ import frc.robot.subsystems.elevator.commands.ManualElevator;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.IntakeHatch;
-import frc.robot.subsystems.superstructure.commands.ToggleHeightCommand;
 import frc.robot.subsystems.superstructure.commands.OuttakeHatch;
 import frc.robot.util.JoystickWrapper;
 
