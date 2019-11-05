@@ -27,7 +27,7 @@ public class Constants {
 		public static final int ELEVATOR_M2 = 11;
 		public static final int ELEVATOR_M3 = 10;
 
-		public static final int INTAKE = 16; // TODO(ingi)
+		public static final int INTAKE = 4;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class Constants {
 	/**
 	 * Seconds
 	 */
-	public static final double HATCH_EJECT_RETRACT_TIMEOUT = 0.1;
+	public static final double HATCH_EJECT_RETRACT_TIMEOUT = 0.3;
 
 	// Thresholds for shifting the elevator using the Z axis on the Joysticks, which
 	// is the throttle. This is to save another button on the very cramped elevator
