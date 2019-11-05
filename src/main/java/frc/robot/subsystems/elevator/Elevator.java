@@ -96,12 +96,23 @@ public class Elevator extends Subsystem {
 	public void setTarget(double rotations) {
 		final int pidSlot = elevatorGearState == GearState.HIGH ? Constants.HIGH_GEAR_PID_SLOT
 				: Constants.LOW_GEAR_PID_SLOT;
-
-		if (topLimit.get()) {
-			setPosition(Constants.TOP_LIMIT_POSITION);
-		} else if (bottomLimit.get()) {
-			setPosition(Constants.BOTTOM_LIMIT_POSITION);
+		// Use the correct top limit position depending on high gear or low gear
+		if (isHighGear()) {
+			if (topLimit.get()) {
+				setPosition(Constants.TOP_LIMIT_POSITION);
+			} else if (bottomLimit.get()) {
+				setPosition(Constants.BOTTOM_LIMIT_POSITION);
+			}
 		}
+		else if (!isHighGear()) {
+			if (topLimit.get()) {
+				setPosition(Constants.TOP_LOW_GEAR_LIMIT_POSITION);
+			}
+			else if (bottomLimit.get()) {
+				setPosition(Constants.BOTTOM_LIMIT_POSITION);
+			}
+		}
+		
 
 		// Set a controller reference value, using the desired number of rotations
 		// We also specify ControlType.kPosition, which defines the correct underlying
@@ -146,15 +157,16 @@ public class Elevator extends Subsystem {
 		Robot.elevator.setTarget(Robot.elevator.getPosition());
 	}
 
-	// Needs to be tested
 	public void shiftHigh() {
 		elevatorShift.set(true);
 		elevatorGearState = GearState.HIGH;
+		convertPositionToHighGear();
 	}
 
 	public void shiftLow() {
 		elevatorShift.set(false);
 		elevatorGearState = GearState.LOW;
+		convertPositionToLowGear();
 	}
 
 	public double getPosition() {
@@ -168,6 +180,24 @@ public class Elevator extends Subsystem {
 	 */
 	public void setPosition(double rotations) {
 		elevatorMotors.getMasterMotor().setEncPosition(rotations);
+	}
+
+	/**
+	 * Convert encoder position from high gear position to the equivalent position in low gear, used during shifting
+	 */
+	private void convertPositionToLowGear() {
+		elevatorMotors.getMasterMotor().setEncPosition(elevatorMotors.getEncoderPosition() * Constants.HIGH_GEAR_TO_LOW_GEAR_ROTATIONS);
+	}
+
+	/**
+	 * Convert encoder position from low gear position to the equivalent position in high gear, used during shifting
+	 */
+	private void convertPositionToHighGear() {
+		elevatorMotors.getMasterMotor().setEncPosition(elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
+	}
+
+	public boolean isHighGear() {
+		return elevatorGearState == GearState.HIGH;
 	}
 
 	@Override

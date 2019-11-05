@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.Constants;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
 import frc.robot.subsystems.elevator.commands.ManualElevator;
@@ -18,6 +17,7 @@ import frc.robot.util.JoystickWrapper;
 public class OI {
 	public final JoystickWrapper driverAController;
 	public final JoystickWrapper driverBController;
+	public final JoystickWrapper climbController;
 	public final JoystickButton reverseDrive, driveShift;
 	public final JoystickButton useManualElevator;
 	public final JoystickButton hatchLevel1;
@@ -53,6 +53,10 @@ public class OI {
 		outtakeCargo = new JoystickButton(driverBController, 3);
 		intakeHatch = new JoystickButton(driverBController, 5);
 		outtakeHatch = new JoystickButton(driverBController, 6);
+
+		/** CLIMB */
+		climbController = new JoystickWrapper(2);
+		
 
 		configureButtonBindings();
 	}

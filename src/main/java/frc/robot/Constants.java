@@ -57,9 +57,12 @@ public class Constants {
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
 															// can make this into inches/meters
 	public static final double TOP_LIMIT_POSITION = 46.2; // Tested by James 11/5/19 // 172.0 is for low gear // Tested by Ingi 10/31/19
+	public static final double TOP_LOW_GEAR_LIMIT_POSITION = 172.0; // Tested by Ingi 10/31/19
 	public static final double ELEVATOR_ROTATION_TOLERANCE = 10.0; // Rotations away from the ends of the elevator to
 																	// slow down. This will be inaccurate because the motors spin more rotations per inch in low gear during manual control. The manual input scalar will be better for this
 	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.125; // TBD, Placeholder
+	public static final double HIGH_GEAR_TO_LOW_GEAR_ROTATIONS = TOP_LOW_GEAR_LIMIT_POSITION / TOP_LIMIT_POSITION; // Multiply high gear position by this to convert to the equivalent low gear position
+	public static final double LOW_GEAR_TO_HIGH_GEAR_ROATIONS = TOP_LIMIT_POSITION / TOP_LOW_GEAR_LIMIT_POSITION; // Multiply low gear position by this to convert to the equivalent high gear position
 
 	// Constants for high gear/scoring
 	public static final double ELEVATOR_P = 0.075;;
@@ -69,7 +72,7 @@ public class Constants {
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 
-	// Constants for low gear/climbing
+	// Constants for low gear/climbing. ALWAYS ZERO TO PREVENT LOW GEAR POSITION CONTROL
 	public static final double ELEVATOR_CLIMB_P = 0.0;
 	public static final double ELEVATOR_CLIMB_I = 0.0;
 	public static final double ELEVATOR_CLIMB_D = 0.0;
