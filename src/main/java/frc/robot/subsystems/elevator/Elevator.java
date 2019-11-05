@@ -24,39 +24,29 @@ import frc.robot.util.SparkMaxMotorGroup;
  * The subsystem responsible for controlling the robot's elevator.
  */
 public class Elevator extends Subsystem {
-	private final SparkMaxMotorGroup elevatorMotors;
-	private final Solenoid elevatorShift;
-	private final CANDigitalInput topLimit, bottomLimit;
-	private GearState elevatorGearState;
-
-	// Gear State is used to know which pid mode to use
-	public enum GearState {
-		HIGH, LOW
-	}
+	private final SparkMaxMotorGroup m_elevatorMotors;
+	private final Solenoid m_elevatorShift;
+	private final CANDigitalInput m_topLimit, m_bottomLimit;
 
 	public Elevator() {
 		final CANSparkMax elevatorMotor1 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M1, MotorType.kBrushless);
 		final CANSparkMax elevatorMotor2 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M2, MotorType.kBrushless);
 		final CANSparkMax elevatorMotor3 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M3, MotorType.kBrushless);
 
-		elevatorMotors = new SparkMaxMotorGroup("Elevator Motor Group", elevatorMotor1, elevatorMotor2, elevatorMotor3);
+		m_elevatorMotors = new SparkMaxMotorGroup("Elevator", elevatorMotor1, elevatorMotor2, elevatorMotor3);
 
-		elevatorShift = new Solenoid(Constants.PCMIDs.ELEVATOR_SHIFT);
+		m_elevatorShift = new Solenoid(Constants.PCMIDs.ELEVATOR_SHIFT);
 
 		// Use limit switch(es) with master motor controller at the "board level"
 		// This prevents movement upwards/positive percentoutputs when the top limit is
 		// triggered, and does the same for negative percentoutputs when the bottom is
 		// triggered.
-		topLimit = elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-		bottomLimit = elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-		topLimit.enableLimitSwitch(true);
-		bottomLimit.enableLimitSwitch(true);
+		m_topLimit = m_elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		m_bottomLimit = m_elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		m_topLimit.enableLimitSwitch(true);
+		m_bottomLimit.enableLimitSwitch(true);
 
-		elevatorMotors.setInverted(false);
-
-		// Assume that the elevator is in its high gear when the robot program
-		// initializes
-		elevatorGearState = GearState.HIGH;
+		m_elevatorMotors.setInverted(false);
 
 		// Populate PID slots with the low-gear and high-gear gains
 		configureHighGearPID();
@@ -67,7 +57,7 @@ public class Elevator extends Subsystem {
 	 * Configure the elevator using the PID for high gear/scoring.
 	 */
 	public void configureHighGearPID() {
-		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
+		CANPIDController pidController = m_elevatorMotors.getMasterMotor().getPIDController();
 		pidController.setP(Constants.ELEVATOR_P, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setI(Constants.ELEVATOR_I, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setD(Constants.ELEVATOR_D, Constants.HIGH_GEAR_PID_SLOT);
@@ -79,12 +69,19 @@ public class Elevator extends Subsystem {
 	 * Configure the elevator using the PID for low gear/climbing.
 	 */
 	public void configureLowGearPID() {
-		CANPIDController pidController = elevatorMotors.getMasterMotor().getPIDController();
+		CANPIDController pidController = m_elevatorMotors.getMasterMotor().getPIDController();
 		pidController.setP(Constants.ELEVATOR_CLIMB_P, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setI(Constants.ELEVATOR_CLIMB_I, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setD(Constants.ELEVATOR_CLIMB_D, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setIZone(Constants.ELEVATOR_CLIMB_I_ZONE, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
+	}
+		
+	/**
+	 * @return Whether or not the elevator is in high gear.
+	 */
+	public boolean getGearState() {
+		return m_elevatorShift.get();
 	}
 
 	/**
@@ -94,21 +91,21 @@ public class Elevator extends Subsystem {
 	 * @param rotations Encoder rotations/revolutions demand.
 	 */
 	public void setTarget(double rotations) {
-		final int pidSlot = elevatorGearState == GearState.HIGH ? Constants.HIGH_GEAR_PID_SLOT
+		final int pidSlot = getGearState() ? Constants.HIGH_GEAR_PID_SLOT
 				: Constants.LOW_GEAR_PID_SLOT;
 		// Use the correct top limit position depending on high gear or low gear
-		if (isHighGear()) {
-			if (topLimit.get()) {
+		if (getGearState()) {
+			if (m_topLimit.get()) {
 				setPosition(Constants.TOP_LIMIT_POSITION);
-			} else if (bottomLimit.get()) {
+			} else if (m_bottomLimit.get()) {
 				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
 		}
-		else if (!isHighGear()) {
-			if (topLimit.get()) {
+		else if (!getGearState()) {
+			if (m_topLimit.get()) {
 				setPosition(Constants.TOP_LOW_GEAR_LIMIT_POSITION);
 			}
-			else if (bottomLimit.get()) {
+			else if (m_bottomLimit.get()) {
 				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
 		}
@@ -120,7 +117,7 @@ public class Elevator extends Subsystem {
 		// PIDSlot defines the set of PID gains to be used to achieve/maintain the
 		// position given.
 		// The `0.0` at the end declares that there is no arbitrary feedforward.
-		elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot, 0.0);
+		m_elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot, 0.0);
 	}
 
 	/**
@@ -131,9 +128,9 @@ public class Elevator extends Subsystem {
 	 */
 	public void raise(double power) {
 		if ((Constants.TOP_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-			elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			m_elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
 		} else {
-			elevatorMotors.set(Math.abs(power));
+			m_elevatorMotors.set(Math.abs(power));
 		}
 	}
 
@@ -146,31 +143,29 @@ public class Elevator extends Subsystem {
 	public void lower(double power) {
 		if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
 				- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-			elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			m_elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
 		} else {
-			elevatorMotors.set(-Math.abs(power));
+			m_elevatorMotors.set(-Math.abs(power));
 		}
 	}
 
 	public void stop() {
-		elevatorMotors.set(0.0);
+		m_elevatorMotors.set(0.0);
 		Robot.elevator.setTarget(Robot.elevator.getPosition());
 	}
 
 	public void shiftHigh() {
-		elevatorShift.set(true);
-		elevatorGearState = GearState.HIGH;
+		m_elevatorShift.set(true);
 		convertPositionToHighGear();
 	}
 
 	public void shiftLow() {
-		elevatorShift.set(false);
-		elevatorGearState = GearState.LOW;
+		m_elevatorShift.set(false);
 		convertPositionToLowGear();
 	}
 
 	public double getPosition() {
-		return elevatorMotors.getEncoderPosition();
+		return m_elevatorMotors.getEncoderPosition();
 	}
 
 	/**
@@ -179,25 +174,21 @@ public class Elevator extends Subsystem {
 	 * @param rotations Rotations to use for the new encoder position
 	 */
 	public void setPosition(double rotations) {
-		elevatorMotors.getMasterMotor().setEncPosition(rotations);
+		m_elevatorMotors.getMasterMotor().setEncPosition(rotations);
 	}
 
 	/**
 	 * Convert encoder position from high gear position to the equivalent position in low gear, used during shifting
 	 */
 	private void convertPositionToLowGear() {
-		elevatorMotors.getMasterMotor().setEncPosition(elevatorMotors.getEncoderPosition() * Constants.HIGH_GEAR_TO_LOW_GEAR_ROTATIONS);
+		m_elevatorMotors.getMasterMotor().setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.HIGH_GEAR_TO_LOW_GEAR_ROTATIONS);
 	}
 
 	/**
 	 * Convert encoder position from low gear position to the equivalent position in high gear, used during shifting
 	 */
 	private void convertPositionToHighGear() {
-		elevatorMotors.getMasterMotor().setEncPosition(elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
-	}
-
-	public boolean isHighGear() {
-		return elevatorGearState == GearState.HIGH;
+		m_elevatorMotors.getMasterMotor().setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
 	}
 
 	@Override

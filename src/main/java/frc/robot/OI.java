@@ -7,6 +7,7 @@ import frc.robot.subsystems.elevator.commands.ManualElevator;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.IntakeHatch;
+import frc.robot.subsystems.superstructure.commands.ToggleIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.OuttakeHatch;
 import frc.robot.util.JoystickWrapper;
 
@@ -77,8 +78,7 @@ public class OI {
 		driveShift.whileHeld(new DriveShift());
 
 		/** DRIVER B */
-		//** TODO: Make a command for toggleing intake height, then bind it */
-		// toggleIntakeHeight.toggleWhenPressed(new ToggleHeightCommand());
+		toggleIntakeHeight.toggleWhenPressed(new ToggleIntakeHeight());
 		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, true));
 		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, true));
 		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, true));

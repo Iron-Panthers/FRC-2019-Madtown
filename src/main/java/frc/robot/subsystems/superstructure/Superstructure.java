@@ -33,6 +33,10 @@ public class Superstructure extends Subsystem {
         m_intakeHeight.set(!isHigh);
     }
 
+    public void toggleIntakeHeight() {
+        m_intakeHeight.set(!m_intakeHeight.get());
+    }
+
     public void setCargoIntakePercentOutput(double percentOutput) {
         m_cargoIntake.set(ControlMode.PercentOutput, percentOutput);
     }
