@@ -28,6 +28,11 @@ public class Constants {
 		public static final int ELEVATOR_M3 = 10;
 
 		public static final int INTAKE = 4;
+
+		/** TODO: Check */
+		public static final int LEFT_WINCH = 31;
+		public static final int RIGHT_WINCH = 32;
+		public static final int VACUUM_PORT = 7;
 	}
 
 	/**
@@ -89,6 +94,12 @@ public class Constants {
 	public static final double CARGO_LEVEL_1_HEIGHT = 10.0;
 	public static final double CARGO_LEVEL_2_HEIGHT = 30.0;
 	public static final double CARGO_LEVEL_3_HEIGHT = 45.0;
+
+	/** CLIMB CONSTANTS */
+	public static final double WINCH_RAISE_POWER = 0.3;
+	public static final double WINCH_LOWER_POWER = -0.3;
+	public static final boolean IS_RIGHT_WINCH_INVERTED = false;
+	public static final boolean IS_LEFT_WINCH_INVERTED = false;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.5;

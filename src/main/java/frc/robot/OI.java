@@ -7,6 +7,7 @@ import frc.robot.subsystems.elevator.commands.ManualElevator;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.IntakeHatch;
+import frc.robot.subsystems.superstructure.commands.ToggleHeightCommand;
 import frc.robot.subsystems.superstructure.commands.OuttakeHatch;
 import frc.robot.util.JoystickWrapper;
 
@@ -19,7 +20,6 @@ public class OI {
 	public final JoystickWrapper driverBController;
 	public final JoystickWrapper climbController;
 	public final JoystickButton reverseDrive, driveShift;
-	public final JoystickButton useManualElevator;
 	public final JoystickButton hatchLevel1;
 	public final JoystickButton hatchLevel2;
 	public final JoystickButton hatchLevel3;
@@ -31,6 +31,9 @@ public class OI {
 	public final JoystickButton outtakeCargo;
 	public final JoystickButton intakeHatch;
 	public final JoystickButton outtakeHatch;
+	public final JoystickButton toggleIntakeHeight;
+
+	public final JoystickButton useManualElevator;
 
 	public OI() {
 		/** DRIVER A */
@@ -40,7 +43,7 @@ public class OI {
 
 		/** DRIVER B */
 		driverBController = new JoystickWrapper(1);
-		useManualElevator = new JoystickButton(driverBController, 1);
+		toggleIntakeHeight = new JoystickButton(driverBController, 1);
 		hatchLevel1 = new JoystickButton(driverBController, 11);
 		hatchLevel2 = new JoystickButton(driverBController, 9);
 		hatchLevel3 = new JoystickButton(driverBController, 7);
@@ -53,10 +56,11 @@ public class OI {
 		outtakeCargo = new JoystickButton(driverBController, 3);
 		intakeHatch = new JoystickButton(driverBController, 5);
 		outtakeHatch = new JoystickButton(driverBController, 6);
+		// We are short buttons to extend and retract the arm
 
 		/** CLIMB */
 		climbController = new JoystickWrapper(2);
-		
+		useManualElevator = new JoystickButton(climbController, 1);
 
 		configureButtonBindings();
 	}
@@ -74,7 +78,8 @@ public class OI {
 		driveShift.whileHeld(new DriveShift());
 
 		/** DRIVER B */
-		useManualElevator.whileHeld(new ManualElevator());
+		//** TODO: Make a command for toggleing intake height, then bind it */
+		// toggleIntakeHeight.toggleWhenPressed(new ToggleHeightCommand());
 		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, true));
 		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, true));
 		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, true));
@@ -87,5 +92,8 @@ public class OI {
 		outtakeHatch.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		intakeCargo.whenPressed(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
 		outtakeCargo.whenPressed(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+
+		/** CLIMB */
+		useManualElevator.whileHeld(new ManualElevator());
 	}
 }
