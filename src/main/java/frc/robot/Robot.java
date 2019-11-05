@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,17 +32,22 @@ public class Robot extends TimedRobot {
 	private CANEncoder m_encoder;
 	private CANDigitalInput topLimit, bottomLimit;
 	public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-	public static final double topEncoderPosition = 0.0;
+	// public static final double topEncoderPosition = 172.0; // Low Gear
+	public static final double topEncoderPosition = 46.2; // high Gear
+	private Solenoid elevatorShift;
 
 	private static Joystick stick1;
 	private static JoystickButton manualElevator;
 	private static JoystickButton zeroElevator;
+	private static JoystickButton shift;
 
 	@Override
 	public void robotInit() {
 		stick1 = new Joystick(0);
 		manualElevator = new JoystickButton(stick1, 1);
 		zeroElevator = new JoystickButton(stick1, 2);
+		elevatorShift = new Solenoid(2);
+		shift = new JoystickButton(stick1, 3);
 		// initialize motor
 		m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
 		follower2 = new CANSparkMax(follower2ID, MotorType.kBrushless);
@@ -54,6 +60,9 @@ public class Robot extends TimedRobot {
 		m_motor.restoreFactoryDefaults();
 		follower2.restoreFactoryDefaults();
 		follower3.restoreFactoryDefaults();
+		m_motor.setInverted(true);
+		follower2.setInverted(true);
+		follower3.setInverted(true);
 		follower2.follow(m_motor);
 		follower3.follow(m_motor);
 		/**
@@ -65,19 +74,20 @@ public class Robot extends TimedRobot {
 
 		// Encoder object created to display position values
 		m_encoder = m_motor.getEncoder();
-		topLimit = m_motor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-		bottomLimit = m_motor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		topLimit = m_motor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		bottomLimit = m_motor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 		topLimit.enableLimitSwitch(true);
 		bottomLimit.enableLimitSwitch(true);
 
 		// PID coefficients
-		kP = 0.1;
+		// kP = 0.5 for low gear
+		kP = 0.075; // Tested 11/4/19
 		kI = 0;
 		kD = 0;
 		kIz = 0;
 		kFF = 0;
-		kMaxOutput = 1;
-		kMinOutput = -1;
+		kMaxOutput = 0.25;
+		kMinOutput = -0.25;
 
 		// set PID coefficients
 		m_pidController.setP(kP);
@@ -96,26 +106,16 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Max Output", kMaxOutput);
 		SmartDashboard.putNumber("Min Output", kMinOutput);
 		SmartDashboard.putNumber("Set Rotations", 0);
+		SmartDashboard.putNumber("Current Rotations", m_encoder.getPosition());
+	}
+
+	@Override
+	public void teleopInit() {
+		elevatorShift.set(true);
 	}
 
 	@Override
 	public void teleopPeriodic() {
-		// 2. PID control, go to a rotation between the top and bottom, use to tune P and F
-		if (topLimit.get()) {
-			System.out.println("Top Limit Encoder Position: " + m_encoder.getPosition());
-			m_encoder.setPosition(175.0);
-		}
-		if (bottomLimit.get()) {
-			System.out.println("Bottom Limit Encoder Position: " + m_encoder.getPosition());
-			m_encoder.setPosition(0.0);
-		}
-		if (zeroElevator.get()) {
-			m_encoder.setPosition(0.0);
-		}
-		if (manualElevator.get()) {
-			m_motor.set(stick1.getY());
-			return;
-		}
 		// read PID coefficients from SmartDashboard
 		double p = SmartDashboard.getNumber("P Gain", 0);
 		double i = SmartDashboard.getNumber("I Gain", 0);
@@ -125,6 +125,7 @@ public class Robot extends TimedRobot {
 		double max = SmartDashboard.getNumber("Max Output", 0);
 		double min = SmartDashboard.getNumber("Min Output", 0);
 		double rotations = SmartDashboard.getNumber("Set Rotations", 0);
+		SmartDashboard.putNumber("Current Rotations", m_encoder.getPosition());
 
 		// if PID coefficients on SmartDashboard have changed, write new values to
 		// controller
@@ -170,5 +171,27 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("SetPoint", rotations);
 		SmartDashboard.putNumber("ProcessVariable", m_encoder.getPosition());
+		if (shift.get()) {
+			elevatorShift.set(true);
+		}
+		else {
+			elevatorShift.set(false);
+		}
+		// 2. PID control, go to a rotation between the top and bottom, use to tune P and F
+		if (topLimit.get()) {
+			System.out.println("Top Limit Encoder Position: " + m_encoder.getPosition());
+			m_encoder.setPosition(topEncoderPosition);
+		}
+		if (bottomLimit.get()) {
+			System.out.println("Bottom Limit Encoder Position: " + m_encoder.getPosition());
+			m_encoder.setPosition(0.0);
+		}
+		if (zeroElevator.get()) {
+			m_encoder.setPosition(0.0);
+		}
+		if (manualElevator.get()) {
+			m_motor.set(stick1.getY());
+			return;
+		}
 	}
 }
