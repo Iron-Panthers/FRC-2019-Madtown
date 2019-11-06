@@ -29,6 +29,7 @@ public class OI {
 	public final JoystickWrapper climbController;
 	public final JoystickButton reverseDrive, driveShift;
 	public final JoystickButton hubertOuttake;
+	public final JoystickButton hubertHatchOuttake;
 	public final JoystickButton ohCrapHubert;
 
 	public final JoystickButton hatchLevel1;
@@ -59,6 +60,7 @@ public class OI {
 		reverseDrive = new JoystickButton(driverAController, 1);
 		driveShift = new JoystickButton(driverAController, 2);
 		hubertOuttake = new JoystickButton(driverAController, 7);
+		hubertHatchOuttake = new JoystickButton(driverAController, 8);
 		ohCrapHubert = new JoystickButton(driverAController, 3);
 
 		/** DRIVER B */
@@ -104,6 +106,7 @@ public class OI {
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
 		hubertOuttake.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		hubertHatchOuttake.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		ohCrapHubert.whenPressed(new OhCrap());
 
 		/** DRIVER B */
