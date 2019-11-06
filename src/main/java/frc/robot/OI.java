@@ -89,8 +89,8 @@ public class OI {
 
 		intakeHatch.whenPressed(new IntakeHatch());
 		outtakeHatch.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
-		intakeCargo.whenPressed(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
-		outtakeCargo.whenPressed(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		intakeCargo.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		outtakeCargo.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
 
 		/** CLIMB */
 		useManualElevator.whileHeld(new ManualElevator());
