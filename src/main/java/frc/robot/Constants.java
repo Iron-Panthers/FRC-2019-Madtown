@@ -70,9 +70,10 @@ public class Constants {
 															// can make this into inches/meters
 	public static final double TOP_LIMIT_POSITION = 46.2; // Tested by James 11/5/19 // 172.0 is for low gear // Tested by Ingi 10/31/19
 	public static final double TOP_LOW_GEAR_LIMIT_POSITION = 172.0; // Tested by Ingi 10/31/19
-	public static final double ELEVATOR_ROTATION_TOLERANCE = 10.0; // Rotations away from the ends of the elevator to
-																	// slow down. This will be inaccurate because the motors spin more rotations per inch in low gear during manual control. The manual input scalar will be better for this
-	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.125; // TBD, Placeholder
+	public static final double ELEVATOR_ROTATION_TOLERANCE_LOW_GEAR = 10.0; // Rotations away from the ends of the elevator to
+																	// slow down in low gear.
+	public static final double ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR = 3.0; // See above, high gear
+	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.5; // TBD, Placeholder
 	public static final double HIGH_GEAR_TO_LOW_GEAR_ROTATIONS = TOP_LOW_GEAR_LIMIT_POSITION / TOP_LIMIT_POSITION; // Multiply high gear position by this to convert to the equivalent low gear position
 	public static final double LOW_GEAR_TO_HIGH_GEAR_ROATIONS = TOP_LIMIT_POSITION / TOP_LOW_GEAR_LIMIT_POSITION; // Multiply low gear position by this to convert to the equivalent high gear position
 
@@ -118,17 +119,10 @@ public class Constants {
 	public static final double MILLIAMPS_TO_PSI = MAX_PSI_READING / MAX_MILLIAMP_READING;
 
 	/** INPUT CONSTANTS */
-	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.5;
+	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 1.0;
 	public static final double CARGO_INTAKE_INPUT_MAGNITUDE = 1.0;
 	/**
 	 * Seconds
 	 */
 	public static final double HATCH_EJECT_RETRACT_TIMEOUT = 0.3;
-
-	// Thresholds for shifting the elevator using the Z axis on the Joysticks, which
-	// is the throttle. This is to save another button on the very cramped elevator
-	// joystick
-	// TODO confirm this is truly necessary + confirm throttle reads -1.0 .. 1.0 (?)
-	public static final double HIGH_GEAR_SHIFT_THRESHOLD = 0.7;
-	public static final double LOW_GEAR_SHIFT_THRESHOLD = -0.7;
 }

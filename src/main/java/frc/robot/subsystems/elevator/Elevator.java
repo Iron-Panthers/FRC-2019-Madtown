@@ -63,7 +63,8 @@ public class Elevator extends Subsystem {
 		pidController.setD(Constants.ELEVATOR_D, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setIZone(Constants.ELEVATOR_I_ZONE, Constants.HIGH_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_F, Constants.HIGH_GEAR_PID_SLOT);
-		pidController.setOutputRange(Constants.ELEVATOR_MIN_OUTPUT, Constants.ELEVATOR_MAX_OUTPUT, Constants.HIGH_GEAR_PID_SLOT);
+		pidController.setOutputRange(Constants.ELEVATOR_MIN_OUTPUT, Constants.ELEVATOR_MAX_OUTPUT,
+				Constants.HIGH_GEAR_PID_SLOT);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class Elevator extends Subsystem {
 		pidController.setIZone(Constants.ELEVATOR_CLIMB_I_ZONE, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
 	}
-		
+
 	/**
 	 * @return Whether or not the elevator is in high gear.
 	 */
@@ -92,8 +93,7 @@ public class Elevator extends Subsystem {
 	 * @param rotations Encoder rotations/revolutions demand.
 	 */
 	public void setTarget(double rotations) {
-		final int pidSlot = getGearState() ? Constants.HIGH_GEAR_PID_SLOT
-				: Constants.LOW_GEAR_PID_SLOT;
+		final int pidSlot = getGearState() ? Constants.HIGH_GEAR_PID_SLOT : Constants.LOW_GEAR_PID_SLOT;
 		// Use the correct top limit position depending on high gear or low gear
 		if (getGearState()) {
 			if (m_topLimit.get()) {
@@ -101,16 +101,13 @@ public class Elevator extends Subsystem {
 			} else if (m_bottomLimit.get()) {
 				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
-		}
-		else if (!getGearState()) {
+		} else if (!getGearState()) {
 			if (m_topLimit.get()) {
 				setPosition(Constants.TOP_LOW_GEAR_LIMIT_POSITION);
-			}
-			else if (m_bottomLimit.get()) {
+			} else if (m_bottomLimit.get()) {
 				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
 		}
-		
 
 		// Set a controller reference value, using the desired number of rotations
 		// We also specify ControlType.kPosition, which defines the correct underlying
@@ -118,35 +115,61 @@ public class Elevator extends Subsystem {
 		// PIDSlot defines the set of PID gains to be used to achieve/maintain the
 		// position given.
 		// The `0.0` at the end declares that there is no arbitrary feedforward.
-		m_elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot, 0.0);
+		m_elevatorMotors.getMasterMotor().getPIDController().setReference(rotations, ControlType.kPosition, pidSlot,
+				0.0);
 	}
 
 	/**
-	 * Raise the elevator unless the top limit is pressed
+	 * Raise the elevator unless the top limit is pressed.
 	 * 
 	 * @param power Power between 0.0 and 1.0 for the power, absolute value used for
 	 *              safety and for limit switches
 	 */
 	public void raise(double power) {
-		if ((Constants.TOP_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-			m_elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
-		} else {
-			m_elevatorMotors.set(Math.abs(power));
+		// High Gear
+		if (getGearState()) {
+			if (Constants.TOP_LIMIT_POSITION
+					- Robot.elevator.getPosition() < Constants.ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR) {
+				m_elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				m_elevatorMotors.set(Math.abs(power));
+			}
+		}
+		// Low Gear
+		else if (!getGearState()) {
+			if ((Constants.TOP_LOW_GEAR_LIMIT_POSITION
+					- Robot.elevator.getPosition()) < Constants.ELEVATOR_ROTATION_TOLERANCE_LOW_GEAR) {
+				m_elevatorMotors.set(Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				m_elevatorMotors.set(Math.abs(power));
+			}
 		}
 	}
 
 	/**
-	 * Lower the elevator unless the bottom limit is pressed
+	 * Lower the elevator unless the bottom limit is pressed.
 	 * 
 	 * @param power Power between -1.0 and 0.0 for the power, absolute value used
 	 *              for safety and for limit switches
 	 */
 	public void lower(double power) {
-		if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
-				- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE) {
-			m_elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
-		} else {
-			m_elevatorMotors.set(-Math.abs(power));
+		// High Gear
+		if (getGearState()) {
+			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
+					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR) {
+				m_elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				m_elevatorMotors.set(-Math.abs(power));
+			}
+		}
+		// Low Gear
+		else if (!getGearState()) {
+			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
+					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE_LOW_GEAR) {
+				m_elevatorMotors.set(-Math.abs(power) * Constants.ROTATION_TOLERANCE_MULTIPLIER);
+			} else {
+				m_elevatorMotors.set(-Math.abs(power));
+			}
 		}
 	}
 
@@ -158,8 +181,7 @@ public class Elevator extends Subsystem {
 	public void shiftHigh() {
 		if (getGearState()) {
 			return;
-		}
-		else {
+		} else {
 			m_elevatorShift.set(true);
 			convertPositionToHighGear();
 		}
@@ -168,8 +190,7 @@ public class Elevator extends Subsystem {
 	public void shiftLow() {
 		if (!getGearState()) {
 			return;
-		}
-		else {
+		} else {
 			m_elevatorShift.set(false);
 			convertPositionToLowGear();
 		}
@@ -189,17 +210,21 @@ public class Elevator extends Subsystem {
 	}
 
 	/**
-	 * Convert encoder position from high gear position to the equivalent position in low gear, used during shifting
+	 * Convert encoder position from high gear position to the equivalent position
+	 * in low gear, used during shifting
 	 */
 	private void convertPositionToLowGear() {
-		m_elevatorMotors.getMasterMotor().setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.HIGH_GEAR_TO_LOW_GEAR_ROTATIONS);
+		m_elevatorMotors.getMasterMotor()
+				.setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.HIGH_GEAR_TO_LOW_GEAR_ROTATIONS);
 	}
 
 	/**
-	 * Convert encoder position from low gear position to the equivalent position in high gear, used during shifting
+	 * Convert encoder position from low gear position to the equivalent position in
+	 * high gear, used during shifting
 	 */
 	private void convertPositionToHighGear() {
-		m_elevatorMotors.getMasterMotor().setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
+		m_elevatorMotors.getMasterMotor()
+				.setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
 	}
 
 	@Override
