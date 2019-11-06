@@ -95,12 +95,12 @@ public class Constants {
 	/** Elevator Setpoints */
 	// TODO these are all placeholder values. They should be tuned tomorrow/Monday
 	public static final double HATCH_LEVEL_1_HEIGHT = 1.0;
-	public static final double HATCH_LEVEL_2_HEIGHT = 15.0;
-	public static final double HATCH_LEVEL_3_HEIGHT = 30.0;
+	public static final double HATCH_LEVEL_2_HEIGHT = 26.0;
+	public static final double HATCH_LEVEL_3_HEIGHT = 45.0;
 	public static final double CARGO_SHIP_HEIGHT = 20.0;
-	public static final double CARGO_LEVEL_1_HEIGHT = 10.0;
-	public static final double CARGO_LEVEL_2_HEIGHT = 25.0;
-	public static final double CARGO_LEVEL_3_HEIGHT = 40.0;
+	public static final double CARGO_LEVEL_1_HEIGHT = 1.0;
+	public static final double CARGO_LEVEL_2_HEIGHT = 25.5;
+	public static final double CARGO_LEVEL_3_HEIGHT = 45.95;
 
 	/** CLIMB CONSTANTS */
 	public static final double WINCH_RAISE_POWER = 0.3;
