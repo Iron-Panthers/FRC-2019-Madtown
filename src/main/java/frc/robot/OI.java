@@ -1,14 +1,21 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.subsystems.climb.subsystems.EngageClimb;
+import frc.robot.subsystems.climb.subsystems.LowerLeftWinch;
+import frc.robot.subsystems.climb.subsystems.LowerRightWinch;
+import frc.robot.subsystems.climb.subsystems.RaiseLeftWinch;
+import frc.robot.subsystems.climb.subsystems.RaiseRightWinch;
+import frc.robot.subsystems.climb.subsystems.ReleaseClimb;
+import frc.robot.subsystems.climb.subsystems.RunVacuum;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
 import frc.robot.subsystems.elevator.commands.ManualElevator;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.IntakeHatch;
-import frc.robot.subsystems.superstructure.commands.ToggleIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.OuttakeHatch;
+import frc.robot.subsystems.superstructure.commands.ToggleIntakeHeight;
 import frc.robot.util.JoystickWrapper;
 
 /**
@@ -34,6 +41,13 @@ public class OI {
 	public final JoystickButton toggleIntakeHeight;
 
 	public final JoystickButton useManualElevator;
+	public final JoystickButton releaseClimb;
+	public final JoystickButton engageClimb;
+	public final JoystickButton raiseLeftWinch;
+	public final JoystickButton lowerLeftWinch;
+	public final JoystickButton raiseRightWinch;
+	public final JoystickButton lowerRightWinch;
+	public final JoystickButton runVacuum;
 
 	public OI() {
 		/** DRIVER A */
@@ -61,6 +75,13 @@ public class OI {
 		/** CLIMB */
 		climbController = new JoystickWrapper(2);
 		useManualElevator = new JoystickButton(climbController, 1);
+		releaseClimb = new JoystickButton(climbController, 7);
+		engageClimb = new JoystickButton(climbController, 8);
+		raiseLeftWinch = new JoystickButton(climbController, 6);
+		raiseRightWinch = new JoystickButton(climbController, 5);
+		lowerLeftWinch = new JoystickButton(climbController, 4);
+		lowerRightWinch = new JoystickButton(climbController, 3);
+		runVacuum = new JoystickButton(climbController, 12);
 
 		configureButtonBindings();
 	}
@@ -94,5 +115,12 @@ public class OI {
 
 		/** CLIMB */
 		useManualElevator.whileHeld(new ManualElevator());
+		releaseClimb.whenPressed(new ReleaseClimb());
+		engageClimb.whenPressed(new EngageClimb());
+		raiseLeftWinch.whileHeld(new RaiseLeftWinch());
+		raiseRightWinch.whileHeld(new RaiseRightWinch());
+		lowerLeftWinch.whileHeld(new LowerLeftWinch());
+		lowerRightWinch.whileHeld(new LowerRightWinch());
+		runVacuum.whileHeld(new RunVacuum());
 	}
 }

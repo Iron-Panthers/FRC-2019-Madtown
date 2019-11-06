@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.superstructure.Superstructure;
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	public static Elevator elevator;
 	public static Superstructure superstructure;
+	public static Climb climb;
 	public static OI oi;
 
 	Command m_autonomousCommand;
@@ -40,6 +42,7 @@ public class Robot extends TimedRobot {
 		drive = new Drive();
 		elevator = new Elevator();
 		superstructure = new Superstructure();
+		climb = new Climb();
 		oi = new OI();
 	}
 

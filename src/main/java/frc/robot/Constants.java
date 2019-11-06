@@ -35,6 +35,13 @@ public class Constants {
 		public static final int VACUUM_PORT = 7;
 	}
 
+	public class DigitalAnalogIDs {
+		private DigitalAnalogIDs() {
+		}
+
+		public static final int PRESSURE_SENSOR_PORT = 0;
+	}
+
 	/**
 	 * Defines all the solenoid IDs for the PCM (Pneumatics Control Module).
 	 */
@@ -103,6 +110,10 @@ public class Constants {
 
 	public static final double VACUUM_POWER = 0.5;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
+	public static final double PRESSURE_SENSOR_RESISTANCE = 250.0; // Ohms, Needs Testing
+	public static final double MAX_PSI_READING = 14.5;
+	public static final double MAX_MILLIAMP_READING = 20.0;
+	public static final double MILLIAMPS_TO_PSI = MAX_PSI_READING / MAX_MILLIAMP_READING;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 0.5;
