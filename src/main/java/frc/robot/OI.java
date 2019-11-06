@@ -78,7 +78,7 @@ public class OI {
 		driveShift.whileHeld(new DriveShift());
 
 		/** DRIVER B */
-		toggleIntakeHeight.toggleWhenPressed(new ToggleIntakeHeight());
+		toggleIntakeHeight.whenPressed(new ToggleIntakeHeight());
 		hatchLevel1.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_1_HEIGHT, true));
 		hatchLevel2.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_2_HEIGHT, true));
 		hatchLevel3.whenPressed(new ElevatorAndIntakeHeight(Constants.HATCH_LEVEL_3_HEIGHT, true));

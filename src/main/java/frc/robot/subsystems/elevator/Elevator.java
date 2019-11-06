@@ -41,12 +41,12 @@ public class Elevator extends Subsystem {
 		// This prevents movement upwards/positive percentoutputs when the top limit is
 		// triggered, and does the same for negative percentoutputs when the bottom is
 		// triggered.
-		m_topLimit = m_elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-		m_bottomLimit = m_elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		m_topLimit = m_elevatorMotors.getMasterMotor().getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+		m_bottomLimit = m_elevatorMotors.getMasterMotor().getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 		m_topLimit.enableLimitSwitch(true);
 		m_bottomLimit.enableLimitSwitch(true);
 
-		m_elevatorMotors.setInverted(false);
+		m_elevatorMotors.setInverted(true);
 
 		// Populate PID slots with the low-gear and high-gear gains
 		configureHighGearPID();
@@ -155,13 +155,23 @@ public class Elevator extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		m_elevatorShift.set(true);
-		convertPositionToHighGear();
+		if (getGearState()) {
+			return;
+		}
+		else {
+			m_elevatorShift.set(true);
+			convertPositionToHighGear();
+		}
 	}
 
 	public void shiftLow() {
-		m_elevatorShift.set(false);
-		convertPositionToLowGear();
+		if (!getGearState()) {
+			return;
+		}
+		else {
+			m_elevatorShift.set(false);
+			convertPositionToLowGear();
+		}
 	}
 
 	public double getPosition() {

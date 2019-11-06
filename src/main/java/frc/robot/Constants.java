@@ -70,7 +70,7 @@ public class Constants {
 	public static final double LOW_GEAR_TO_HIGH_GEAR_ROATIONS = TOP_LIMIT_POSITION / TOP_LOW_GEAR_LIMIT_POSITION; // Multiply low gear position by this to convert to the equivalent high gear position
 
 	// Constants for high gear/scoring
-	public static final double ELEVATOR_P = 0.075;;
+	public static final double ELEVATOR_P = 0.075;
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
@@ -88,12 +88,12 @@ public class Constants {
 	/** Elevator Setpoints */
 	// TODO these are all placeholder values. They should be tuned tomorrow/Monday
 	public static final double HATCH_LEVEL_1_HEIGHT = 1.0;
-	public static final double HATCH_LEVEL_2_HEIGHT = 20.0;
-	public static final double HATCH_LEVEL_3_HEIGHT = 40.0;
+	public static final double HATCH_LEVEL_2_HEIGHT = 15.0;
+	public static final double HATCH_LEVEL_3_HEIGHT = 30.0;
 	public static final double CARGO_SHIP_HEIGHT = 20.0;
 	public static final double CARGO_LEVEL_1_HEIGHT = 10.0;
-	public static final double CARGO_LEVEL_2_HEIGHT = 30.0;
-	public static final double CARGO_LEVEL_3_HEIGHT = 45.0;
+	public static final double CARGO_LEVEL_2_HEIGHT = 25.0;
+	public static final double CARGO_LEVEL_3_HEIGHT = 40.0;
 
 	/** CLIMB CONSTANTS */
 	public static final double WINCH_RAISE_POWER = 0.3;

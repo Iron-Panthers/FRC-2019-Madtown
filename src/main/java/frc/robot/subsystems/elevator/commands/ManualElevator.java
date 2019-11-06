@@ -27,7 +27,7 @@ public class ManualElevator extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double y = Robot.oi.driverBController.getY();
+		double y = Robot.oi.climbController.getY();
 		y *= Constants.ELEVATOR_MANUAL_POWER_SCALAR;
 		// If positive, raise the elevator
 		if (y > 0) {
