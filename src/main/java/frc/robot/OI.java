@@ -105,7 +105,7 @@ public class OI {
 		/** DRIVER A */
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
-		hubertOuttake.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		hubertOuttake.whileHeld(new CargoCommand(false, Constants.CARGO_OUTTAKE_MAGNITUDE));
 		hubertHatchOuttake.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		ohCrapHubert.whenPressed(new OhCrap());
 
@@ -122,7 +122,7 @@ public class OI {
 		intakeHatch.whenPressed(new IntakeHatch());
 		outtakeHatch.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		intakeCargo.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
-		outtakeCargo.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		outtakeCargo.whileHeld(new CargoCommand(false, Constants.CARGO_OUTTAKE_MAGNITUDE));
 
 		/** CLIMB */
 		useManualElevator.whileHeld(new ManualElevator());

@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		SmartDashboard.putBoolean("Is succed", climb.isSuccd());
+		SmartDashboard.putBoolean("Is bottomed", elevator.isBottomed());
 	}
 
 	/**

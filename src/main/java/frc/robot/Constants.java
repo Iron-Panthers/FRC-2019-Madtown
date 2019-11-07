@@ -152,7 +152,8 @@ public class Constants {
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 1.0;
-	public static final double CARGO_INTAKE_INPUT_MAGNITUDE = 1.0;
+	public static final double CARGO_INTAKE_INPUT_MAGNITUDE = 0.5;
+	public static final double CARGO_OUTTAKE_MAGNITUDE = 1.0;
 	/**
 	 * Seconds
 	 */

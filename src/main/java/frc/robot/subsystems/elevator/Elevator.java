@@ -234,6 +234,10 @@ public class Elevator extends Subsystem {
 				.setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
 	}
 
+	public boolean isBottomed() {
+		return m_bottomLimit.get();
+	}
+
 	@Override
 	public void initDefaultCommand() {
 		// No default needed because setting to target keeps going even when a command
