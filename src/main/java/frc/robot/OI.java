@@ -11,6 +11,7 @@ import frc.robot.subsystems.climb.commands.RunVacuum;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
 import frc.robot.subsystems.elevator.commands.ManualElevator;
+import frc.robot.subsystems.elevator.commands.OhCrap;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
 import frc.robot.subsystems.superstructure.commands.IntakeHatch;
@@ -27,6 +28,9 @@ public class OI {
 	public final JoystickWrapper driverBController;
 	public final JoystickWrapper climbController;
 	public final JoystickButton reverseDrive, driveShift;
+	public final JoystickButton hubertOuttake;
+	public final JoystickButton ohCrapHubert;
+
 	public final JoystickButton hatchLevel1;
 	public final JoystickButton hatchLevel2;
 	public final JoystickButton hatchLevel3;
@@ -54,6 +58,8 @@ public class OI {
 		driverAController = new JoystickWrapper(0);
 		reverseDrive = new JoystickButton(driverAController, 1);
 		driveShift = new JoystickButton(driverAController, 2);
+		hubertOuttake = new JoystickButton(driverAController, 7);
+		ohCrapHubert = new JoystickButton(driverAController, 3);
 
 		/** DRIVER B */
 		driverBController = new JoystickWrapper(1);
@@ -97,6 +103,8 @@ public class OI {
 		/** DRIVER A */
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
+		hubertOuttake.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		ohCrapHubert.whenPressed(new OhCrap());
 
 		/** DRIVER B */
 		toggleIntakeHeight.whenPressed(new ToggleIntakeHeight());

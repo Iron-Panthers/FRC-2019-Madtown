@@ -79,6 +79,12 @@ public class Elevator extends Subsystem {
 		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
 	}
 
+	public void configureOhCrapPID() {
+		configureHighGearPID();
+		CANPIDController pidController = m_elevatorMotors.getMasterMotor().getPIDController();
+		pidController.setOutputRange(-1.0, 1.0, Constants.HIGH_GEAR_PID_SLOT);
+	}
+
 	/**
 	 * @return Whether or not the elevator is in high gear.
 	 */

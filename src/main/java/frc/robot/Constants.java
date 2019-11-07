@@ -75,6 +75,7 @@ public class Constants {
 																			// elevator to
 	// slow down in low gear.
 	public static final double ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR = 3.0; // See above, high gear
+	public static final double OH_CRAP_TOLERANCE = 0.5; // Rotation tolerance to stop Oh Crap
 	public static final double ROTATION_TOLERANCE_MULTIPLIER = 0.5; // TBD, Placeholder
 	public static final double HIGH_GEAR_TO_LOW_GEAR_ROTATIONS = TOP_LOW_GEAR_LIMIT_POSITION / TOP_LIMIT_POSITION; // Multiply
 																													// high
@@ -111,10 +112,8 @@ public class Constants {
 	public static final double ELEVATOR_D = 0.0;
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
-	public static final double ELEVATOR_MIN_OUTPUT = -0.75;
-	public static final double ELEVATOR_MAX_OUTPUT = 0.25; // Because the elevator is inverted, positive power goes
-															// down. Due to gravity, we want to limit the power going
-															// down, which this does
+	public static final double ELEVATOR_MIN_OUTPUT = -0.5; // Gravity helps this so we limit this
+	public static final double ELEVATOR_MAX_OUTPUT = 0.75; 
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 
 	// Constants for low gear/climbing. ALWAYS ZERO TO PREVENT LOW GEAR POSITION
