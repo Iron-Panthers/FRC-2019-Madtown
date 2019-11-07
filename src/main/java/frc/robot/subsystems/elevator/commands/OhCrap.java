@@ -23,6 +23,7 @@ public class OhCrap extends Command {
 	protected void initialize() {
 		Robot.elevator.shiftHigh();
 		Robot.elevator.configureOhCrapPID();
+		Robot.superstructure.setIntakeHeight(false);
 		Robot.elevator.setTarget(Constants.BOTTOM_LIMIT_POSITION);
 	}
 
@@ -34,7 +35,7 @@ public class OhCrap extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (Constants.BOTTOM_LIMIT_POSITION - Robot.elevator.getPosition()) < Constants.OH_CRAP_TOLERANCE; 
+		return (Robot.elevator.getPosition() - Constants.BOTTOM_LIMIT_POSITION) < Constants.OH_CRAP_TOLERANCE; 
 	}
 
 	// Called once after isFinished returns true
