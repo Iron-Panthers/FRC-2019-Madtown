@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.util.OI;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.superstructure.Superstructure;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +25,9 @@ import frc.robot.util.OI;
  */
 public class Robot extends TimedRobot {
 	public static Drive drive;
-	public static Hardware hardware;
+	public static Elevator elevator;
+	public static Superstructure superstructure;
+	public static Climb climb;
 	public static OI oi;
 
 	Command m_autonomousCommand;
@@ -35,8 +39,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		hardware = new Hardware();
 		drive = new Drive();
+		elevator = new Elevator();
+		superstructure = new Superstructure();
+		climb = new Climb();
 		oi = new OI();
 	}
 
@@ -51,6 +57,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		System.out.println("Encoder: " + elevator.getPosition());
 	}
 
 	/**
@@ -81,6 +88,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		// Make sure to shift into high gear for driving and elevator
 		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
@@ -121,6 +129,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		// // Shift the elevator using the throttle, unnecessary because manual always uses low, and setpoints use high
+		// if (oi.elevatorStick.getZ() > Constants.HIGH_GEAR_SHIFT_THRESHOLD) {
+		// 	elevator.shiftHigh();
+		// }
+		// else if (oi.elevatorStick.getZ() < Constants.LOW_GEAR_SHIFT_THRESHOLD) {
+			
+		// }
 	}
 
 	/**
