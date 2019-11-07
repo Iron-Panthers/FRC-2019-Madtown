@@ -141,7 +141,7 @@ public class Constants {
 	public static final boolean IS_RIGHT_WINCH_INVERTED = false;
 	public static final boolean IS_LEFT_WINCH_INVERTED = true;
 
-	public static final double VACUUM_POWER = 0.5;
+	public static final double VACUUM_POWER = 1.0;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
 	public static final double PRESSURE_SENSOR_RESISTANCE = 250.0; // Ohms, Needs Testing
 	public static final double MAX_PSI_READING = 14.5;
