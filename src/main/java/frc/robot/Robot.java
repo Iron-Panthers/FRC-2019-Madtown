@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("PSI", climb.getPSI());
+		SmartDashboard.putBoolean("Is succed", climb.isSuccd());
 	}
 
 	/**

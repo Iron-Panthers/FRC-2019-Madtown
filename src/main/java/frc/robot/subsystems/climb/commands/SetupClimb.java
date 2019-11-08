@@ -11,16 +11,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class RunVacuum extends Command {
-	public RunVacuum() {
+public class SetupClimb extends Command {
+	public SetupClimb() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
+		requires(Robot.elevator);
+		requires(Robot.superstructure);
 		requires(Robot.climb);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		Robot.elevator.shiftLow();
+		Robot.superstructure.setIntakeHeight(true);
+		Robot.elevator.setTarget(Constants.CLIMB_SETUP_HEIGHT);
+		Robot.climb.useClimbRelease(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -32,20 +38,20 @@ public class RunVacuum extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		// This will happen when the pressure sensor reads 0 volts which should be impossible
+		// return Robot.climb.isSuccd();
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.climb.stopSucc();
+		Robot.climb.succ();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.climb.stopSucc();
+		Robot.climb.succ();
 	}
 }

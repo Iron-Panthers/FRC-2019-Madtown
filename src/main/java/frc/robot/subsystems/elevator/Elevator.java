@@ -77,6 +77,7 @@ public class Elevator extends Subsystem {
 		pidController.setD(Constants.ELEVATOR_CLIMB_D, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setIZone(Constants.ELEVATOR_CLIMB_I_ZONE, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setOutputRange(Constants.ELEVATOR_LOW_GEAR_MIN_OUTPUT, Constants.ELEVATOR_LOW_GEAR_MAX_OUTPUT, Constants.LOW_GEAR_PID_SLOT);
 	}
 
 	public void configureOhCrapPID() {
