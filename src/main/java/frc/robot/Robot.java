@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		System.out.println("Encoder: " + elevator.getPosition());
+		SmartDashboard.putNumber("PSI", climb.getPSI());
 	}
 
 	/**
@@ -129,13 +130,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		// // Shift the elevator using the throttle, unnecessary because manual always uses low, and setpoints use high
-		// if (oi.elevatorStick.getZ() > Constants.HIGH_GEAR_SHIFT_THRESHOLD) {
-		// 	elevator.shiftHigh();
-		// }
-		// else if (oi.elevatorStick.getZ() < Constants.LOW_GEAR_SHIFT_THRESHOLD) {
-			
-		// }
 	}
 
 	/**

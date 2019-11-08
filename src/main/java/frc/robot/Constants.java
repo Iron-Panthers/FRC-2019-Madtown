@@ -113,7 +113,7 @@ public class Constants {
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
 	public static final double ELEVATOR_MIN_OUTPUT = -0.5; // Gravity helps this so we limit this
-	public static final double ELEVATOR_MAX_OUTPUT = 0.75; 
+	public static final double ELEVATOR_MAX_OUTPUT = 0.75;
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 
 	// Constants for low gear/climbing. ALWAYS ZERO TO PREVENT LOW GEAR POSITION
@@ -143,10 +143,9 @@ public class Constants {
 
 	public static final double VACUUM_POWER = 1.0;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
-	public static final double PRESSURE_SENSOR_RESISTANCE = 250.0; // Ohms, Needs Testing
-	public static final double MAX_PSI_READING = 14.5;
-	public static final double MAX_MILLIAMP_READING = 20.0;
-	public static final double MILLIAMPS_TO_PSI = MAX_PSI_READING / MAX_MILLIAMP_READING;
+	public static final double SENSOR_VOLTS_TO_PSI_SLOPE = 8.99; // Calculated using two points of voltage and PSI and finding the slope
+	public static final double SENSOR_VOLTS_TO_PSI_Y_INTERCEPT = -23.72; // See above. This means that at 0V, it will be -23.72 PSI, which is admittedly inaccurate (should be -14.5) 
+	public static final double VACUUM_PRESSURE_THRESHOLD = SENSOR_VOLTS_TO_PSI_Y_INTERCEPT;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 1.0;

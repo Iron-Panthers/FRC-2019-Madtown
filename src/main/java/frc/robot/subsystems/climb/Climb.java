@@ -76,13 +76,14 @@ public class Climb extends Subsystem {
 		rightWinch.set(ControlMode.PercentOutput, 0);
 	}
 
-	// public double getPSI() {
-	// 	double milliAmps = getPressureSensorMilliamps();
-	// }
+	public double getPSI() {
+		// Don't worry about the magic numbers. It is fine. Trust me/us. -Aaron/Ingi/James/Chris
+		return (getPressureSensorVoltage() * Constants.SENSOR_VOLTS_TO_PSI_SLOPE) + Constants.SENSOR_VOLTS_TO_PSI_Y_INTERCEPT;
+	}
 
-	// public double getPressureSensorMilliamps() {
-	// 	return pressureSensor.getVoltage() / Constants.PRESSURE_SENSOR_RESISTANCE;
-	// }
+	public double getPressureSensorVoltage() {
+		return pressureSensor.getVoltage();
+	}
 
 	@Override
 	public void initDefaultCommand() {

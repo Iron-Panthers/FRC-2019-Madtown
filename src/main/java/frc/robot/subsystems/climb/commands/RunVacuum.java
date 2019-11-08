@@ -8,6 +8,7 @@
 package frc.robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class RunVacuum extends Command {
@@ -32,7 +33,8 @@ public class RunVacuum extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		// This will happen when the pressure sensor reads 0 volts which should be impossible
+		return Robot.climb.getPSI() <= Constants.SENSOR_VOLTS_TO_PSI_Y_INTERCEPT;
 	}
 
 	// Called once after isFinished returns true
