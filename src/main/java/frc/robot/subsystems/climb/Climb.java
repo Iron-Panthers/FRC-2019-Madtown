@@ -10,7 +10,7 @@ package frc.robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
@@ -25,7 +25,7 @@ public class Climb extends Subsystem {
 	private final TalonSRX leftWinch;
 	private final TalonSRX rightWinch;
 	private final TalonSRX vacuumMotor;
-	private final AnalogInput pressureSensor;
+	private final DigitalInput pressureSensor;
 
 	public Climb() {
 		climbRelease = new Solenoid(Constants.PCMIDs.CLIMB_RELEASE);
@@ -35,7 +35,7 @@ public class Climb extends Subsystem {
 		rightWinch.setInverted(Constants.IS_RIGHT_WINCH_INVERTED);
 		vacuumMotor = new TalonSRX(Constants.CANIDs.VACUUM_PORT);
 		vacuumMotor.setInverted(Constants.IS_VACUUM_MOTOR_INVERTED);
-		pressureSensor = new AnalogInput(Constants.DigitalAnalogIDs.PRESSURE_SENSOR_PORT);
+		pressureSensor = new DigitalInput(Constants.DigitalAnalogIDs.PRESSURE_SENSOR_PORT);
 	}
 
 	public void useClimbRelease(boolean isReleasing) {
@@ -45,7 +45,6 @@ public class Climb extends Subsystem {
 
 	public void succ() {
 		vacuumMotor.set(ControlMode.PercentOutput, Constants.VACUUM_POWER);
-		System.out.println("Succing");
 	}
 
 	public void stopSucc() {
@@ -76,13 +75,10 @@ public class Climb extends Subsystem {
 		rightWinch.set(ControlMode.PercentOutput, 0);
 	}
 
-	// public double getPSI() {
-	// 	double milliAmps = getPressureSensorMilliamps();
-	// }
-
-	// public double getPressureSensorMilliamps() {
-	// 	return pressureSensor.getVoltage() / Constants.PRESSURE_SENSOR_RESISTANCE;
-	// }
+	public boolean isSuccd() {
+		// Needs testing, might be !get
+		return pressureSensor.get();
+	}
 
 	@Override
 	public void initDefaultCommand() {

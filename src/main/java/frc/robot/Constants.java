@@ -113,20 +113,21 @@ public class Constants {
 	public static final double ELEVATOR_F = 0.0;
 	public static final double ELEVATOR_I_ZONE = 0.0; // Range in which I is used
 	public static final double ELEVATOR_MIN_OUTPUT = -0.5; // Gravity helps this so we limit this
-	public static final double ELEVATOR_MAX_OUTPUT = 0.75; 
+	public static final double ELEVATOR_MAX_OUTPUT = 0.75;
 	public static final int HIGH_GEAR_PID_SLOT = 1;
 
 	// Constants for low gear/climbing. ALWAYS ZERO TO PREVENT LOW GEAR POSITION
 	// CONTROL
-	public static final double ELEVATOR_CLIMB_P = 0.0;
+	public static final double ELEVATOR_CLIMB_P = 0.5; // Needs further testing
 	public static final double ELEVATOR_CLIMB_I = 0.0;
 	public static final double ELEVATOR_CLIMB_D = 0.0;
 	public static final double ELEVATOR_CLIMB_F = 0.0;
 	public static final double ELEVATOR_CLIMB_I_ZONE = 0.0; // Range in which I is used
+	public static final double ELEVATOR_LOW_GEAR_MIN_OUTPUT = -0.5;
+	public static final double ELEVATOR_LOW_GEAR_MAX_OUTPUT = 0.75;
 	public static final int LOW_GEAR_PID_SLOT = 0;
 
 	/** Elevator Setpoints */
-	// TODO these are all placeholder values. They should be tuned tomorrow/Monday
 	public static final double HATCH_LEVEL_1_HEIGHT = 1.0;
 	public static final double HATCH_LEVEL_2_HEIGHT = 26.0;
 	public static final double HATCH_LEVEL_3_HEIGHT = 45.95;
@@ -134,6 +135,8 @@ public class Constants {
 	public static final double CARGO_LEVEL_1_HEIGHT = 1.0;
 	public static final double CARGO_LEVEL_2_HEIGHT = 25.5;
 	public static final double CARGO_LEVEL_3_HEIGHT = 45.95;
+
+	public static final double CLIMB_SETUP_HEIGHT = 120.0; // TBD, needs testing
 
 	/** CLIMB CONSTANTS */
 	public static final double WINCH_RAISE_POWER = 0.6;
@@ -143,10 +146,9 @@ public class Constants {
 
 	public static final double VACUUM_POWER = 1.0;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
-	public static final double PRESSURE_SENSOR_RESISTANCE = 250.0; // Ohms, Needs Testing
-	public static final double MAX_PSI_READING = 14.5;
-	public static final double MAX_MILLIAMP_READING = 20.0;
-	public static final double MILLIAMPS_TO_PSI = MAX_PSI_READING / MAX_MILLIAMP_READING;
+	public static final double SENSOR_VOLTS_TO_PSI_SLOPE = 8.99; // Calculated using two points of voltage and PSI and finding the slope
+	public static final double SENSOR_VOLTS_TO_PSI_Y_INTERCEPT = -23.72; // See above. This means that at 0V, it will be -23.72 PSI, which is admittedly inaccurate (should be -14.5) 
+	public static final double VACUUM_PRESSURE_THRESHOLD = SENSOR_VOLTS_TO_PSI_Y_INTERCEPT;
 
 	/** INPUT CONSTANTS */
 	public static final double ELEVATOR_MANUAL_POWER_SCALAR = 1.0;
