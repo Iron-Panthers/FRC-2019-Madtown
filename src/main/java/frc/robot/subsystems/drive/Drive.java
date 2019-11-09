@@ -121,14 +121,14 @@ public class Drive extends Subsystem {
 	 * Shift the drivebase to low gear.
 	 */
 	public void shiftLow() {
-		gearShift.set(true);
+		gearShift.set(false);
 	}
 
 	/**
 	 * Shift the drivebase to high gear.
 	 */
 	public void shiftHigh() {
-		gearShift.set(false);
+		gearShift.set(true);
 	}
 
 	@Override
