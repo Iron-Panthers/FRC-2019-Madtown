@@ -103,7 +103,7 @@ public class OI {
 		/** DRIVER A */
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
-		hubertOuttake.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		hubertOuttake.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
 		ohCrapHubert.whenPressed(new OhCrap());
 
 		/** DRIVER B */
