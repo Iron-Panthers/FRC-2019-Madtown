@@ -64,7 +64,10 @@ public class Constants {
 	public static final double RADIAL_TURN_SENSITIVITY = 20;
 	public static final double SCALING_POWER = 2.75;
 	public static final double RAMP_RATE = 0.25; // Seconds to go from 0 to full throttle
-	public static final int DRIVE_CURRENT_LIMIT = 60;
+	public static final int DRIVE_CURRENT_LIMIT = 60; // Amps to limit the drive motors to, removes voltage instead of
+														// stopping. 60 seems better but not exactly correct. Not tested
+														// on the floor, only free spin (40 trips the breaker normally,
+														// 60 is high)
 
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
@@ -147,8 +150,11 @@ public class Constants {
 
 	public static final double VACUUM_POWER = 1.0;
 	public static final boolean IS_VACUUM_MOTOR_INVERTED = false;
-	public static final double SENSOR_VOLTS_TO_PSI_SLOPE = 8.99; // Calculated using two points of voltage and PSI and finding the slope
-	public static final double SENSOR_VOLTS_TO_PSI_Y_INTERCEPT = -23.72; // See above. This means that at 0V, it will be -23.72 PSI, which is admittedly inaccurate (should be -14.5) 
+	public static final double SENSOR_VOLTS_TO_PSI_SLOPE = 8.99; // Calculated using two points of voltage and PSI and
+																	// finding the slope
+	public static final double SENSOR_VOLTS_TO_PSI_Y_INTERCEPT = -23.72; // See above. This means that at 0V, it will be
+																			// -23.72 PSI, which is admittedly
+																			// inaccurate (should be -14.5)
 	public static final double VACUUM_PRESSURE_THRESHOLD = SENSOR_VOLTS_TO_PSI_Y_INTERCEPT;
 
 	/** INPUT CONSTANTS */
