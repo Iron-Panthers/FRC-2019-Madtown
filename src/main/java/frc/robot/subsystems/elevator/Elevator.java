@@ -185,6 +185,15 @@ public class Elevator extends Subsystem {
 	 */
 	public void lower(double power) {
 		// High Gear
+		if (!bottomWasPressed) {
+			if (m_bottomLimit.get()) {
+				setPosition(Constants.BOTTOM_LIMIT_POSITION);
+				bottomWasPressed = true;
+			}
+		}
+		if (!m_bottomLimit.get()) {
+			bottomWasPressed = false;
+		}
 		if (getGearState()) {
 			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
 					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR) {
@@ -264,6 +273,10 @@ public class Elevator extends Subsystem {
 
 	public boolean isBottomed() {
 		return m_bottomLimit.get();
+	}
+
+	public void setWasBottomed(boolean wasBottomed) {
+		this.bottomWasPressed = wasBottomed;
 	}
 
 	@Override

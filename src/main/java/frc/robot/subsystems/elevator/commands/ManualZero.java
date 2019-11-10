@@ -20,7 +20,8 @@ public class ManualZero extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.setPosition(0);
+	Robot.elevator.setPosition(0);
+	Robot.elevator.setWasBottomed(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
