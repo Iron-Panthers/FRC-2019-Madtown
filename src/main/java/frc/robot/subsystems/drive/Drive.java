@@ -44,6 +44,10 @@ public class Drive extends Subsystem {
 
 		left.setInverted(Constants.IS_LEFT_INVERTED);
 		right.setInverted(Constants.IS_RIGHT_INVERTED);
+
+		left.getMasterMotor().setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+		right.getMasterMotor().setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+		// left.getMasterMotor().setSmartCurrentLimit(stallLimit, freeLimit)
 		isReversed = false;
 	}
 

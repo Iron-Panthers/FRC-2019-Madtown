@@ -64,6 +64,7 @@ public class Constants {
 	public static final double RADIAL_TURN_SENSITIVITY = 20;
 	public static final double SCALING_POWER = 2.75;
 	public static final double RAMP_RATE = 0.25; // Seconds to go from 0 to full throttle
+	public static final int DRIVE_CURRENT_LIMIT = 60;
 
 	/** Elevator Constants */
 	public static final double BOTTOM_LIMIT_POSITION = 0.0; // In rotations by default but using conversion factors we
