@@ -27,6 +27,7 @@ public class Elevator extends Subsystem {
 	private final SparkMaxMotorGroup m_elevatorMotors;
 	private final Solenoid m_elevatorShift;
 	private final CANDigitalInput m_topLimit, m_bottomLimit;
+	private boolean bottomWasPressed;
 
 	public Elevator() {
 		final CANSparkMax elevatorMotor1 = new CANSparkMax(Constants.CANIDs.ELEVATOR_M1, MotorType.kBrushless);
@@ -51,6 +52,8 @@ public class Elevator extends Subsystem {
 		// Populate PID slots with the low-gear and high-gear gains
 		configureHighGearPID();
 		configureLowGearPID();
+		bottomWasPressed = false; // False to always run the zero when a setpoint is pressed after turning on the
+									// robot when the elevator is all the way to the bottom
 	}
 
 	/**
@@ -77,7 +80,8 @@ public class Elevator extends Subsystem {
 		pidController.setD(Constants.ELEVATOR_CLIMB_D, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setIZone(Constants.ELEVATOR_CLIMB_I_ZONE, Constants.LOW_GEAR_PID_SLOT);
 		pidController.setFF(Constants.ELEVATOR_CLIMB_F, Constants.LOW_GEAR_PID_SLOT);
-		pidController.setOutputRange(Constants.ELEVATOR_LOW_GEAR_MIN_OUTPUT, Constants.ELEVATOR_LOW_GEAR_MAX_OUTPUT, Constants.LOW_GEAR_PID_SLOT);
+		pidController.setOutputRange(Constants.ELEVATOR_LOW_GEAR_MIN_OUTPUT, Constants.ELEVATOR_LOW_GEAR_MAX_OUTPUT,
+				Constants.LOW_GEAR_PID_SLOT);
 	}
 
 	public void configureOhCrapPID() {
@@ -102,17 +106,37 @@ public class Elevator extends Subsystem {
 	public void setTarget(double rotations) {
 		final int pidSlot = getGearState() ? Constants.HIGH_GEAR_PID_SLOT : Constants.LOW_GEAR_PID_SLOT;
 		// Use the correct top limit position depending on high gear or low gear
+		// High gear
 		if (getGearState()) {
+			// If boolean not triggered, zero if needed.
+			// Prevents elevator from staying at enc position 0 when trying to move up
+			if (!bottomWasPressed) {
+				if (m_bottomLimit.get()) {
+					setPosition(Constants.BOTTOM_LIMIT_POSITION);
+					bottomWasPressed = true;
+				}
+			}
+			// Once the elevator moves enough to be away from the limit, reset the boolean
+			if (!m_bottomLimit.get()) {
+				bottomWasPressed = false;
+			}
 			if (m_topLimit.get()) {
 				setPosition(Constants.TOP_LIMIT_POSITION);
-			} else if (m_bottomLimit.get()) {
-				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
-		} else if (!getGearState()) {
+
+		} else if (!getGearState()) { // Low gear
+			// See above
+			if (!bottomWasPressed) {
+				if (m_bottomLimit.get()) {
+					setPosition(Constants.BOTTOM_LIMIT_POSITION);
+					bottomWasPressed = true;
+				}
+			}
+			if (!m_bottomLimit.get()) {
+				bottomWasPressed = false;
+			}
 			if (m_topLimit.get()) {
 				setPosition(Constants.TOP_LOW_GEAR_LIMIT_POSITION);
-			} else if (m_bottomLimit.get()) {
-				setPosition(Constants.BOTTOM_LIMIT_POSITION);
 			}
 		}
 
@@ -161,6 +185,15 @@ public class Elevator extends Subsystem {
 	 */
 	public void lower(double power) {
 		// High Gear
+		if (!bottomWasPressed) {
+			if (m_bottomLimit.get()) {
+				setPosition(Constants.BOTTOM_LIMIT_POSITION);
+				bottomWasPressed = true;
+			}
+		}
+		if (!m_bottomLimit.get()) {
+			bottomWasPressed = false;
+		}
 		if (getGearState()) {
 			if ((Math.abs(Constants.BOTTOM_LIMIT_POSITION
 					- Robot.elevator.getPosition())) < Constants.ELEVATOR_ROTATION_TOLERANCE_HIGH_GEAR) {
@@ -216,6 +249,10 @@ public class Elevator extends Subsystem {
 		m_elevatorMotors.getMasterMotor().setEncPosition(rotations);
 	}
 
+	public double getAppliedOutput() {
+		return m_elevatorMotors.getMasterMotor().getAppliedOutput();
+	}
+
 	/**
 	 * Convert encoder position from high gear position to the equivalent position
 	 * in low gear, used during shifting
@@ -232,6 +269,14 @@ public class Elevator extends Subsystem {
 	private void convertPositionToHighGear() {
 		m_elevatorMotors.getMasterMotor()
 				.setEncPosition(m_elevatorMotors.getEncoderPosition() * Constants.LOW_GEAR_TO_HIGH_GEAR_ROATIONS);
+	}
+
+	public boolean isBottomed() {
+		return m_bottomLimit.get();
+	}
+
+	public void setWasBottomed(boolean wasBottomed) {
+		this.bottomWasPressed = wasBottomed;
 	}
 
 	@Override

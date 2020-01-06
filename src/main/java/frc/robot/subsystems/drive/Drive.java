@@ -44,6 +44,10 @@ public class Drive extends Subsystem {
 
 		left.setInverted(Constants.IS_LEFT_INVERTED);
 		right.setInverted(Constants.IS_RIGHT_INVERTED);
+
+		left.getMasterMotor().setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+		right.getMasterMotor().setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+		// left.getMasterMotor().setSmartCurrentLimit(stallLimit, freeLimit)
 		isReversed = false;
 	}
 
@@ -121,14 +125,14 @@ public class Drive extends Subsystem {
 	 * Shift the drivebase to low gear.
 	 */
 	public void shiftLow() {
-		gearShift.set(true);
+		gearShift.set(false);
 	}
 
 	/**
 	 * Shift the drivebase to high gear.
 	 */
 	public void shiftHigh() {
-		gearShift.set(false);
+		gearShift.set(true);
 	}
 
 	@Override

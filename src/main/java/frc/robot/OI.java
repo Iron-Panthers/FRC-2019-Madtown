@@ -11,6 +11,7 @@ import frc.robot.subsystems.climb.commands.RunVacuum;
 import frc.robot.subsystems.drive.commands.DriveShift;
 import frc.robot.subsystems.drive.commands.ReverseDrive;
 import frc.robot.subsystems.elevator.commands.ManualElevator;
+import frc.robot.subsystems.elevator.commands.ManualZero;
 import frc.robot.subsystems.elevator.commands.OhCrap;
 import frc.robot.subsystems.superstructure.commands.CargoCommand;
 import frc.robot.subsystems.superstructure.commands.ElevatorAndIntakeHeight;
@@ -29,7 +30,9 @@ public class OI {
 	public final JoystickWrapper climbController;
 	public final JoystickButton reverseDrive, driveShift;
 	public final JoystickButton hubertOuttake;
+	public final JoystickButton hubertHatchOuttake;
 	public final JoystickButton ohCrapHubert;
+	public final JoystickButton manualZero;
 
 	public final JoystickButton hatchLevel1;
 	public final JoystickButton hatchLevel2;
@@ -59,7 +62,9 @@ public class OI {
 		reverseDrive = new JoystickButton(driverAController, 1);
 		driveShift = new JoystickButton(driverAController, 2);
 		hubertOuttake = new JoystickButton(driverAController, 7);
+		hubertHatchOuttake = new JoystickButton(driverAController, 8);
 		ohCrapHubert = new JoystickButton(driverAController, 3);
+		manualZero = new JoystickButton(driverAController, 6);
 
 		/** DRIVER B */
 		driverBController = new JoystickWrapper(1);
@@ -103,8 +108,10 @@ public class OI {
 		/** DRIVER A */
 		reverseDrive.whileHeld(new ReverseDrive());
 		driveShift.whileHeld(new DriveShift());
-		hubertOuttake.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		hubertOuttake.whileHeld(new CargoCommand(false, Constants.CARGO_OUTTAKE_MAGNITUDE));
+		hubertHatchOuttake.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		ohCrapHubert.whenPressed(new OhCrap());
+		manualZero.whenPressed(new ManualZero());
 
 		/** DRIVER B */
 		toggleIntakeHeight.whenPressed(new ToggleIntakeHeight());
@@ -119,7 +126,7 @@ public class OI {
 		intakeHatch.whenPressed(new IntakeHatch());
 		outtakeHatch.whenPressed(new OuttakeHatch(Constants.HATCH_EJECT_RETRACT_TIMEOUT));
 		intakeCargo.whileHeld(new CargoCommand(true, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
-		outtakeCargo.whileHeld(new CargoCommand(false, Constants.CARGO_INTAKE_INPUT_MAGNITUDE));
+		outtakeCargo.whileHeld(new CargoCommand(false, Constants.CARGO_OUTTAKE_MAGNITUDE));
 
 		/** CLIMB */
 		useManualElevator.whileHeld(new ManualElevator());
